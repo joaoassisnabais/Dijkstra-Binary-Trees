@@ -17,6 +17,8 @@ int main (int argc, char *argv[]){
 
     FILE *fpProbs, *fpMaps, *fpOut;
     char *opt, *probFile, *mapFile, *fileout, *prob = NULL;  
+    graph *g;
+    g = (graph*) malloc(sizeof(graph));
 
     if(argc<4){
         printf("Not enough arguments \n");
