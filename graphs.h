@@ -9,15 +9,10 @@
 #ifndef GRAPHS_H
 #define GRAPHS_H
 
-typedef struct _Id
-{
-    char Id[26];    //string dos id's da localização
-}Id;
-
 typedef struct _Graph
 {
     double *matrix;     //matriz reduzida que na verdade é um vetor
-    Id *c;              //string dos id's da localização
+    char *c[26];        //string dos id's da localização (26 pq é o número max de caracteres possiveis)
     int nv;             //número de vértices
     int na;             //número de arestas
 
