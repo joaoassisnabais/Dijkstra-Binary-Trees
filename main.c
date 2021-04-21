@@ -24,7 +24,7 @@ int main (int argc, char *argv[]){
 
     if(argc<4){
         printf("Not enough arguments \n");
-        exit(0);
+        exit(1);
     }
 
     //extracting cmd line arguments without any map     
@@ -32,7 +32,7 @@ int main (int argc, char *argv[]){
     probFile = argv[2];
 
     fpProbs = fopen(probFile, "r");
-    if(fpProbs == NULL) {
+    if(fpProbs  == NULL) {
         printf("ERROR cannot read problem file %s\n", probFile);
         exit(2);
     }
