@@ -13,6 +13,7 @@
 #include "fileData.h"
 #include "graphs.h"
 #include "matrix.h"
+//#include "problems.h"
 
 int main (int argc, char *argv[]){
 
@@ -39,19 +40,16 @@ int main (int argc, char *argv[]){
     //cicle to go through all maps
     for (int i=3; i<argc ; i++){
         
-        iniMap(i, argv, fileout, mapFile, fpMaps);
+        openMapandOut(i, argv, fileout, mapFile, fpMaps);
         extractProbs(fpProbs, opt, prob);
         createGraph(fpMaps, g);
-        
+
 
 
         if(fpMaps !=NULL) fclose(fpMaps);
         free(fileout);
         if ((strcmp(opt, "-1oo") == 0) || (strcmp(opt, "-1ao") == 0)) break;
     }
-
-
-    
 
     fclose(fpProbs);
     return 0;
