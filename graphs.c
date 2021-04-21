@@ -18,7 +18,7 @@
 void createGraph(FILE* fp, graph* g){
 
     char str[30];
-    int i=0, j=0, va, vb;
+    int i=0, j=0, va, vb, l;
     double cost;
     
     fscanf(fp,"%d", &g->nv);
@@ -29,7 +29,10 @@ void createGraph(FILE* fp, graph* g){
     for (i=0; i<g->nv; i++){
         fscanf(fp,"%d", &j);
         fscanf(fp, "%s", str );
-        strcpy(g->c[j], str);
+        l = strlen(str) + 1;
+        g->c[j] = (char*) malloc(l);
+        strcpy(g->c[j], str);//fazer define -1
+        g->c[j][l-1] = '\0';
     }
     IniMatrix(g->matrix, g->nv);
     

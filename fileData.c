@@ -18,7 +18,7 @@
 void extractProbs ( FILE* fp, char* option, char* prob ){
 
     FILE *aux = fp;
-    char* buffer = NULL;
+    char buffer[100];
 
     while(fgets(buffer, 100, aux)!=NULL){
 
@@ -28,12 +28,12 @@ void extractProbs ( FILE* fp, char* option, char* prob ){
     }
     return;
 }
-void openMapandOut(int i, char* argv[], char* fileout, char* mapFile, FILE *fpMaps){
+void openMapandOut(int i, char* input[], char* fileout, char* mapFile, FILE *fpMaps){
 
     char extout[] = ".queries";
     char *auxMap = NULL;
 
-    mapFile = argv[i]; 
+    mapFile = input[i]; 
     fileout = (char *) malloc((strlen(mapFile) + strlen(extout) - 4) * sizeof(char));
     auxMap = (char *) malloc((strlen(mapFile)- 4) * sizeof(char));
     for(int i=0; mapFile[i]=='.'; i++) auxMap[i]=mapFile[i]; 

@@ -18,13 +18,13 @@
 int main (int argc, char *argv[]){
 
     FILE *fpProbs, *fpMaps = NULL;// *fpOut;
-    char *opt, *probFile, *mapFile = NULL, *fileout = NULL, *prob = NULL;  
+    char *opt, *probFile, *mapFile = NULL, *fileout = NULL, *prob = NULL;
     graph *g;
     g = (graph*) malloc(sizeof(graph));
 
     if(argc<4){
         printf("Not enough arguments \n");
-        exit(0);
+        exit(1);
     }
 
     //extracting cmd line arguments without any map     
@@ -32,6 +32,7 @@ int main (int argc, char *argv[]){
     probFile = argv[2];
 
     fpProbs = fopen(probFile, "r");
+    //fpProbs = fopen("test1/Pardais01/problemas01.prbs1", "r");
     if(fpProbs == NULL) {
         printf("ERROR cannot read problem file %s\n", probFile);
         exit(2);
