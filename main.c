@@ -32,8 +32,7 @@ int main (int argc, char *argv[]){
     probFile = argv[2];
 
     fpProbs = fopen(probFile, "r");
-    //fpProbs = fopen("test1/Pardais01/problemas01.prbs1", "r");
-    if(fpProbs == NULL) {
+    if(fpProbs  == NULL) {
         printf("ERROR cannot read problem file %s\n", probFile);
         exit(2);
     }
