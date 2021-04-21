@@ -1,5 +1,5 @@
 /******************************************************************************
- * (c) 2021 João Nabais & João Nabais
+ * (c) 2021 João Nabais & João Coelho
  *
  * NAME
  *   matrix.c
@@ -14,9 +14,23 @@
 #include "graphs.h"
 #include "matrix.h"
 
-void createMatrix(graph* g, int numV){
+int AccessMatrix(int va, int vb){
+    int result, min, max;
 
+    if (va > vb){
+        min=vb;
+        max=va;
+    }else{
+        min=va;
+        max=vb;
+    }
+
+    result=
+}
+
+void createMandV(graph* g, int numV){
     g->matrix = (double*) malloc(sizeof(double)*(numV*(numV - 1)/2));
+    g->c = (char*) malloc(sizeof(char)*numV*26);
 
     return;
 }

@@ -1,5 +1,5 @@
 /******************************************************************************
- * (c) 2021 João Nabais & João Nabais
+ * (c) 2021 João Nabais & João Coelho
  *
  * NAME
  *   fileData.h

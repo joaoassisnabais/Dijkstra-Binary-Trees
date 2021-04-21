@@ -1,5 +1,5 @@
 /******************************************************************************
- * (c) 2021 João Nabais & João Nabais
+ * (c) 2021 João Nabais & João Coelho
  *
  * NAME
  *   graphs.c
@@ -17,23 +17,27 @@
 void createGraph(FILE* fp, graph* g){
 
     FILE* aux = fp;
-    char* buffer, auxbuffer = NULL;
-    int vexNumber, aNumber;
+    char* str[30]=NULL;
+    int i=0, j=0;
     
-    fscanf("%d", vexNumber);
-    fscanf("%d", aNumber);
     g->nv= (int*) malloc(sizeof(int));
-    g->nv= vexNumber;
     g->na= (int*) malloc(sizeof(int));
-    g->na= aNumber;
-    createMatrix(g, g->nv);
+    fscanf(fp,"%d", g->nv);
+    fscanf(fp,"%d", g->na);
+    createMandV(g, g->nv);
 
 
-    for (int i=0; i<vexNumber; i++){
-        g->
-        fscanf("%d", );
+    for (i=0; i<g->nv; i++){
+        fscanf(fp,"%d", &j);
+        fsacnf(fp, "%s", &str );
+        strcpy(g->c[j], str);
     }
 
+    for(i=0; i<g->na; i++){
+
+
+
+    }
 
     return;
 
