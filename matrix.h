@@ -1,5 +1,5 @@
 /******************************************************************************
- * (c) 2021 João Nabais & João Nabais
+ * (c) 2021 João Nabais & João Coelho
  *
  * NAME
  *   graphs.h
@@ -9,7 +9,7 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
-void createMatrix(graph* g, int numV);
+void createMandV(graph* g, int numV);
 
 
 #endif
