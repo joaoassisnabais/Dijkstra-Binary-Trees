@@ -14,23 +14,27 @@
 #include "graphs.h"
 #include "matrix.h"
 
-int AccessMatrix(int va, int vb){
+int AccessM(int va, int vb){
     int result, min, max;
 
     if (va > vb){
-        min=vb;
-        max=va;
+        min=vb-1;
+        max=va-1;
     }else{
-        min=va;
-        max=vb;
+        min=va-1;
+        max=vb-1;
     }
-
-    result=
+    result= min + max*(max+1)/2;
+    return result;
 }
 
 void createMandV(graph* g, int numV){
-    g->matrix = (double*) malloc(sizeof(double)*(numV*(numV - 1)/2));
+    g->matrix = (double*) malloc(sizeof(double)*(numV*(numV+1)/2));
     g->c = (char*) malloc(sizeof(char)*numV*26);
-
     return;
+}
+
+void IniMatrix(double* matrix, int numV){
+    int max=numV*(numV+1)/2;
+    for(int i=0; i<max; i++) matrix[i]=0;
 }
