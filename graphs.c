@@ -8,7 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <strings.h>
+#include <string.h>
 
 #include "fileData.h"
 #include "graphs.h"
@@ -17,21 +17,18 @@
 
 void createGraph(FILE* fp, graph* g){
 
-    FILE* aux = fp;
-    char* str[30]=NULL;
+    char str[30];
     int i=0, j=0, va, vb;
     double cost;
     
-    g->nv= (int*) malloc(sizeof(int));
-    g->na= (int*) malloc(sizeof(int));
-    fscanf(fp,"%d", g->nv);
-    fscanf(fp,"%d", g->na);
+    fscanf(fp,"%d", &g->nv);
+    fscanf(fp,"%d", &g->na);
     createMandV(g, g->nv);
 
     //colocar os valores dos ids na matriz
     for (i=0; i<g->nv; i++){
         fscanf(fp,"%d", &j);
-        fsacnf(fp, "%s", &str );
+        fscanf(fp, "%s", str );
         strcpy(g->c[j], str);
     }
     IniMatrix(g->matrix, g->nv);

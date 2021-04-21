@@ -8,7 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <strings.h>
+#include <string.h>
 
 #include "fileData.h"
 #include "graphs.h"
@@ -18,7 +18,7 @@
 void extractProbs ( FILE* fp, char* option, char* prob ){
 
     FILE *aux = fp;
-    char* buffer;
+    char* buffer = NULL;
 
     while(fgets(buffer, 100, aux)!=NULL){
 
@@ -51,7 +51,7 @@ void openMapandOut(int i, char* argv[], char* fileout, char* mapFile, FILE *fpMa
 double selectProblems(graph* g, char* probs) {
 
     double sol=0;
-    char *aux;
+    char *aux = NULL;
     sscanf(probs,"%s", aux);
 
     if (strcmp(aux, "A0")==0) {

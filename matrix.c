@@ -8,7 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <strings.h>
+#include <string.h>
 
 #include "fileData.h"
 #include "graphs.h"
@@ -31,7 +31,7 @@ int AccessM(int va, int vb){
 
 void createMandV(graph* g, int numV){
     g->matrix = (double*) malloc(sizeof(double)*(numV*(numV-1)/2));
-    g->c = (char*) malloc(sizeof(char)*numV*26);
+    g->c = (char**) malloc(sizeof(char)*numV*26);
     return;
 }
 

@@ -8,7 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <strings.h>
+#include <string.h>
 
 #include "fileData.h"
 #include "graphs.h"
@@ -17,8 +17,8 @@
 
 int main (int argc, char *argv[]){
 
-    FILE *fpProbs, *fpMaps, *fpOut;
-    char *opt, *probFile, *mapFile, *fileout, *prob = NULL;  
+    FILE *fpProbs, *fpMaps = NULL;// *fpOut;
+    char *opt, *probFile, *mapFile = NULL, *fileout = NULL, *prob = NULL;  
     graph *g;
     g = (graph*) malloc(sizeof(graph));
 
