@@ -12,6 +12,7 @@
 
 #include "fileData.h"
 #include "graphs.h"
+#include "matrix.h"
 
 void extractProbs ( FILE* fp, char* option, char* prob ){
 

@@ -2,7 +2,7 @@
  * (c) 2021 João Nabais & João Nabais
  *
  * NAME
- *   graphs.h
+ *   graphs.c
  *
  ******************************************************************************/
 
@@ -12,6 +12,7 @@
 
 #include "fileData.h"
 #include "graphs.h"
+#include "matrix.h"
 
 void createGraph(FILE* fp, graph* g){
 
@@ -25,9 +26,11 @@ void createGraph(FILE* fp, graph* g){
     g->nv= vexNumber;
     g->na= (int*) malloc(sizeof(int));
     g->na= aNumber;
+    createMatrix(g, g->nv);
 
 
     for (int i=0; i<vexNumber; i++){
+        g->
         fscanf("%d", );
     }
 

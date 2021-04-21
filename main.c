@@ -12,6 +12,7 @@
 
 #include "fileData.h"
 #include "graphs.h"
+#include "matrix.h"
 
 int main (int argc, char *argv[]){
 
