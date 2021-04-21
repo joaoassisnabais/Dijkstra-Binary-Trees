@@ -27,22 +27,20 @@ void createGraph(FILE* fp, graph* g){
     fscanf(fp,"%d", g->na);
     createMandV(g, g->nv);
 
-    //colocar os valores 
+    //colocar os valores dos ids na matriz
     for (i=0; i<g->nv; i++){
         fscanf(fp,"%d", &j);
         fsacnf(fp, "%s", &str );
         strcpy(g->c[j], str);
     }
     IniMatrix(g->matrix, g->nv);
+    
+    //colocar os custos na matriz de adjacência
     for(i=0; i<g->na; i++){
         fscanf(fp,"%d", &va);
         fscanf(fp,"%d", &vb);
         fscanf(fp,"%lf", &cost);
         g->matrix[AccessM(va,vb)] = cost;
-        g->matrix[AccessM(va,va)]++;
-        g->matrix[AccessM(vb,vb)]++;
     }
-
     return;
-
 }

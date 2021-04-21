@@ -40,6 +40,7 @@ void iniMap(int i, char* argv[], char* fileout, char* mapFile, FILE *fpMaps){
     if(fpMaps == NULL) {
         printf("ERROR cannot read map file %s\n", mapFile);
     }
-
     return;
 }
+
+

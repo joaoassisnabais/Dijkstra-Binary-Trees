@@ -40,8 +40,9 @@ int main (int argc, char *argv[]){
     for (int i=3; i<argc ; i++){
         
         iniMap(i, argv, fileout, mapFile, fpMaps);
-        extractProbs ( fpProbs, opt, prob );
-
+        extractProbs(fpProbs, opt, prob);
+        createGraph(fpMaps, g);
+        
 
 
         if(fpMaps !=NULL) fclose(fpMaps);
