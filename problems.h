@@ -9,6 +9,6 @@
 #ifndef PROBLEMS_H
 #define PROBLEMS_H
 
-
+int A0 (graph *g, int vertex);
 
 #endif

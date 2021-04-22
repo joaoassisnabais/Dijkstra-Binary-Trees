@@ -13,8 +13,8 @@
 #include "fileData.h"
 #include "graphs.h"
 #include "matrix.h"
-//#include "problems.h"
-
+#include "problems.h"
+/*
 void extractProbs ( FILE* fp, char* option, char* prob ){
 
     FILE *aux = fp;
@@ -28,7 +28,8 @@ void extractProbs ( FILE* fp, char* option, char* prob ){
     }
     return;
 }
-void openMapandOut(int i, char* input[], char* fileout, char* mapFile, FILE *fpMaps){
+*/
+void openMapandOut(int i, char* input[], char* fileout, char* mapFile, FILE *fpMaps, FILE* fpout){
 
     char extout[] = ".queries";
     char *auxMap = NULL;
@@ -43,28 +44,45 @@ void openMapandOut(int i, char* input[], char* fileout, char* mapFile, FILE *fpM
     fpMaps = fopen(mapFile, "r");
     if(fpMaps == NULL) {
         printf("ERROR cannot read map file %s\n", mapFile);
+        return;
     }
+
+    fpout = fopen(fileout, "w");
+    if(fpout == NULL) {
+        printf("ERROR cannot open exit file %s\n", fileout);
+        return;
+    }
+    free(fileout);
     free(auxMap);
     return;
 }
 
-double selectProblems(graph* g, char* probs) {
+void selectProblems(FILE* fpProbs, FILE* fpout, graph* g, char* option, char* UI) {
 
-    double sol=0;
-    char *aux = NULL;
-    sscanf(probs,"%s", aux);
+    char *mode = NULL, *out=NULL;
+    int v1=0;
 
-    if (strcmp(aux, "A0")==0) {
-        //A0();
-    } else if (strcmp(aux, "B0")==0) {
-        //B0();
-    } else if (strcmp(aux, "C0")==0){
-        //C0();
-    } else if (strcmp(aux, "D0")==0){
-        //D0();
-    } else exit(3);
+    while(fscanf(fpProbs,"%s", mode)){    
+        
+        fscanf(fpProbs,"%d", &v1);
+        if (strcmp(mode, "A0")==0) {
+            A0 (g,v1);
+        } else if (strcmp(mode, "B0")==0) {
+            //B0();
+        } else if (strcmp(mode, "C0")==0){
+            //C0();
+        } else if (strcmp(mode, "D0")==0){
+            //D0();
+        } else exit(3);
 
-    return sol;
+        if ((strcmp(option, "-1oo") == 0) || (strcmp(option, "-1oa") == 0)) break;
+    }
+    return;
 }
 
+void printexit(FILE* fpout, char* out, char* UI){
 
+
+
+    return;
+}

@@ -13,7 +13,7 @@
 #include "fileData.h"
 #include "graphs.h"
 #include "matrix.h"
-//#include "problems.h"
+#include "problems.h"
 
 void createGraph(FILE* fp, graph* g){
 

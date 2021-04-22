@@ -12,7 +12,7 @@
 typedef struct _Graph
 {
     double *matrix;     //matriz reduzida que na verdade é um vetor
-    char *c[27];        //string dos id's da localização (26 pq é o número max de caracteres possiveis)
+    char **c;        //string dos id's da localização (26 pq é o número max de caracteres possiveis)
     int nv;             //número de vértices
     int na;             //número de arestas
 

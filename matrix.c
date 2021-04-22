@@ -13,7 +13,7 @@
 #include "fileData.h"
 #include "graphs.h"
 #include "matrix.h"
-//#include "problems.h"
+#include "problems.h"
 
 int AccessM(int va, int vb){
     int result, min, max;
@@ -31,7 +31,7 @@ int AccessM(int va, int vb){
 
 void createMandV(graph* g, int numV){
     g->matrix = (double*) malloc(sizeof(double)*(numV*(numV-1)/2));
-    g->c = (char**) malloc(sizeof(char)*numV*26);
+    g->c = malloc(sizeof(g->c)*numV*27);
     return;
 }
 
