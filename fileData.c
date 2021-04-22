@@ -17,14 +17,24 @@
 
 probs * extractProbs (char* opt, FILE* fp) {
 
-    probs *input;
-    char sigla[3];
-    
-    if (fgets(sigla, 2, fp) == NULL) exit(4);
+    probs *output, *linha;
+    int i = 0;
 
-    if (opt == "-1oo" || opt == "-1oa") {
-
+    while(fscanf(fp, "%s %d", linha->problema, linha->vertice) != NULL) {    //Ler problema e primeiro vértice
+        if(i == 0) {
+            output = (probs*) malloc(sizeof(probs));
+            linha = output;
+        } else {
+            linha->next = (probs*) malloc(sizeof(probs));
+        }
+        if(strcmp(linha->problema, "A0") != 0) {
+            if(fscanf(fp, "%d", linha->verticeOrK) == NULL) exit(4);
+        }
+        if(opt == "-1oo" || opt == "-1oa") break;
+        i++;
     }
+
+    return output;
 }
 
 /*
@@ -42,7 +52,7 @@ void extractProbs ( FILE* fp, char* option, char* prob ){
     return;
 }
 */
-void openMapandOut(int i, char* input[], char* fileout, char* mapFile, FILE *fpMaps, FILE* fpout){
+void openMapandOut(int i, char* input[], char* fileout, char* mapFile, FILE *fpMaps, FILE* fpout) {
 
     char extout[] = ".queries";
     char *auxMap = NULL;
@@ -70,26 +80,25 @@ void openMapandOut(int i, char* input[], char* fileout, char* mapFile, FILE *fpM
     return;
 }
 
-void selectProblems(FILE* fpProbs, FILE* fpout, graph* g, char* option, char* UI) {
+void selectProblems(probs* headProbs, FILE* fpout, graph* g, char* option, char* UI) {
 
     char *mode = NULL, *out=NULL;
     int v1=0,v2=0,k=0;
+    probs *auxProbs = headProbs;
 
-    while(fscanf(fpProbs,"%s", mode)){
+    while(auxProbs != NULL){
         
-        fscanf(fpProbs,"%d", &v1);
-        if (strcmp(mode, "A0")==0) {
-            A0 (g,v1);      //saída é um inteiro
-        } else if (strcmp(mode, "B0")==0) {
-            fscanf(fpProbs, "%d",&v2);
-            B0(g, v1, v2);  //saída é um double com 2 casas decimais
-        } else if (strcmp(mode, "C0")==0){
-            C0(g,v1,k);
-        } else if (strcmp(mode, "D0")==0){
+        if (strcmp(auxProbs->problema, "A0")==0) {
+            A0 (g,auxProbs->vertice);      //saída é um inteiro
+        } else if (strcmp(auxProbs->problema, "B0")==0) {;
+            B0(g, auxProbs->vertice, auxProbs->verticeOrK);  //saída é um double com 2 casas decimais
+        } else if (strcmp(auxProbs->problema, "C0")==0){
+            C0(g,auxProbs->vertice,auxProbs->verticeOrK);
+        } else if (strcmp(auxProbs->problema, "D0")==0){
             //D0();
         } else exit(3);
 
-        if ((strcmp(option, "-1oo") == 0) || (strcmp(option, "-1oa") == 0)) break;
+        auxProbs = auxProbs->next;
     }
     return;
 }

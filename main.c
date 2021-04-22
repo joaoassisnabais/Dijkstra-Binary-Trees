@@ -53,7 +53,7 @@ int main (int argc, char *argv[]){
          if(fpMaps!=NULL){
             createGraph(fpMaps, g);
             selectProblems(fpProbsAux, fpOut, g, opt, userInput);
-
+            extractProbs(opt, fpProbs);
 
             fclose(fpMaps);
             fclose(fpOut);
