@@ -14,6 +14,19 @@
 #include "graphs.h"
 #include "matrix.h"
 #include "problems.h"
+
+probs * extractProbs (char* opt, FILE* fp) {
+
+    probs *input;
+    char sigla[3];
+    
+    if (fgets(sigla, 2, fp) == NULL) exit(4);
+
+    if (opt == "-1oo" || opt == "-1oa") {
+
+    }
+}
+
 /*
 void extractProbs ( FILE* fp, char* option, char* prob ){
 
@@ -62,7 +75,7 @@ void selectProblems(FILE* fpProbs, FILE* fpout, graph* g, char* option, char* UI
     char *mode = NULL, *out=NULL;
     int v1=0;
 
-    while(fscanf(fpProbs,"%s", mode)){    
+    while(fscanf(fpProbs,"%s", mode)){
         
         fscanf(fpProbs,"%d", &v1);
         if (strcmp(mode, "A0")==0) {

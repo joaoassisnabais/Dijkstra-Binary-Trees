@@ -49,7 +49,7 @@ int main (int argc, char *argv[]){
     //cicle to go through all maps
     for (int i=3; i<argc ; i++){
         
-        openMapandOut(i, argv, fileout, mapFile, fpMaps, fpOut);
+        openMapandOut(i, argv, fileout, mapFile, fpMaps, fpOut); //abre mapa retorna fpMaps e fpOut
          if(fpMaps!=NULL){
             createGraph(fpMaps, g);
             selectProblems(fpProbsAux, fpOut, g, opt, userInput);
