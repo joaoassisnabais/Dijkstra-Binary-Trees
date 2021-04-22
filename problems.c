@@ -56,15 +56,15 @@ int C0 (graph *g, int v1, int k){
 }
 
 int dfs(graph* g,int v, int *reach, int steps, int k) {
-	int i, max=g->nv*(g->nv-1)/2;;
+	int i, max=g->nv*(g->nv-1)/2;
 	reach[v]=1;
 	for (i=1;i<=max;i++){
         if(g->matrix[AccessM(v,i)]!=0 && !reach[i]) {
             steps++;
             steps=dfs(g,i, reach, steps, k);
-            if(steps == k)goto end;
+            if(steps == k)break;
             steps--;
         }
 	}
-    end:return steps;
+    return steps;
 }

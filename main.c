@@ -17,11 +17,12 @@
 
 int main (int argc, char *argv[]){
 
-    FILE *fpProbs, *fpMaps = NULL, *fpProbsAux, *fpOut = NULL;
-    char *opt, *probFile, *mapFile = NULL, *fileout = NULL, *prob = NULL, *userInput = NULL;
+    FILE *fpProbs, *fpMaps = NULL, *fpOut = NULL;
+    char *opt, *probFile, *mapFile = NULL, *fileout = NULL, *userInput = NULL;
     int UIsz=0;
     graph *g;
     g = (graph*) malloc(sizeof(graph));
+    probs* problemas;
 
     if(argc<4){
         printf("Not enough arguments \n");
@@ -37,7 +38,6 @@ int main (int argc, char *argv[]){
         printf("ERROR cannot read problem file %s\n", probFile);
         exit(2);
     }
-    fpProbsAux=fpProbs;
 
     //puts the user insput on a string to printed
     for (int i=1; i<argc; i++) UIsz=sizeof(char)*strlen(argv[i]) + UIsz + 1;
@@ -49,11 +49,11 @@ int main (int argc, char *argv[]){
     //cicle to go through all maps
     for (int i=3; i<argc ; i++){
         
-        openMapandOut(i, argv, fileout, mapFile, fpMaps, fpOut); //abre mapa retorna fpMaps e fpOut
+        openMapandOut(i, argv, mapFile, &fpMaps, &fpOut); //abre mapa retorna fpMaps e fpOut
          if(fpMaps!=NULL){
             createGraph(fpMaps, g);
-            selectProblems(fpProbsAux, fpOut, g, opt, userInput);
-            extractProbs(opt, fpProbs);
+            problemas = extractProbs(opt, fpProbs);
+            selectProblems(problemas, fpOut, g, opt, userInput);
 
             fclose(fpMaps);
             fclose(fpOut);
