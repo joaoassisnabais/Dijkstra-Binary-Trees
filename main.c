@@ -40,7 +40,7 @@ int main (int argc, char *argv[]){
     fpProbsAux=fpProbs;
 
     //puts the user insput on a string to printed
-    for (int i=1; i<argc; i++) UIsz=sizeof(char)*strlen(argv[i]) + UIsz;
+    for (int i=1; i<argc; i++) UIsz=sizeof(char)*strlen(argv[i]) + UIsz + 1;
     userInput= (char*) malloc(UIsz);
     for (int i=1; i<argc; i++){
         strcat(userInput,argv[i]);

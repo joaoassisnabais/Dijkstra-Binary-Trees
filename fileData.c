@@ -60,17 +60,18 @@ void openMapandOut(int i, char* input[], char* fileout, char* mapFile, FILE *fpM
 void selectProblems(FILE* fpProbs, FILE* fpout, graph* g, char* option, char* UI) {
 
     char *mode = NULL, *out=NULL;
-    int v1=0;
+    int v1=0,v2=0,k=0;
 
     while(fscanf(fpProbs,"%s", mode)){    
         
         fscanf(fpProbs,"%d", &v1);
         if (strcmp(mode, "A0")==0) {
-            A0 (g,v1);
+            A0 (g,v1);      //saída é um inteiro
         } else if (strcmp(mode, "B0")==0) {
-            //B0();
+            fscanf(fpProbs, "%d",&v2);
+            B0(g, v1, v2);  //saída é um double com 2 casas decimais
         } else if (strcmp(mode, "C0")==0){
-            //C0();
+            C0(g,v1,k);
         } else if (strcmp(mode, "D0")==0){
             //D0();
         } else exit(3);
