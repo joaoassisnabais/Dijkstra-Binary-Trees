@@ -17,50 +17,49 @@
 
 int main (int argc, char *argv[]){
 
-    FILE *fpProbs, *fpMaps = NULL, *fpProbsAux, *fpOut = NULL;
-    char *opt, *probFile, *mapFile = NULL, *fileout = NULL, *prob = NULL, *userInput = NULL;
+    FILE *fpProbs, *fpMaps = NULL, *fpOut = NULL;
+    char *opt, *probFile, *mapFile = NULL, *fileout = NULL, *userInput = NULL;
     int UIsz=0;
     graph *g;
     g = (graph*) malloc(sizeof(graph));
+    probs* problems;
 
+    /*Number of cmd line arguments verification*/
     if(argc<4){
         printf("Not enough arguments \n");
         exit(1);
     }
-
-    //extracting cmd line arguments without any map     
+    /*Extract cmd line arguments (option and problem file)*/
     opt = argv[1];
     probFile = argv[2];
-
+    /*Open problems file*/
     fpProbs = fopen(probFile, "r");
     if(fpProbs  == NULL) {
         printf("ERROR cannot read problem file %s\n", probFile);
         exit(2);
     }
-    fpProbsAux=fpProbs;
-
-    //puts the user insput on a string to printed
+    /*User input into string*/
     for (int i=1; i<argc; i++) UIsz=sizeof(char)*strlen(argv[i]) + UIsz + 1;
     userInput= (char*) malloc(UIsz);
     for (int i=1; i<argc; i++){
         strcat(userInput,argv[i]);
         strcat(userInput, " ");
     }
-    //cicle to go through all maps
+    /*Cicle to go through all maps*/
     for (int i=3; i<argc ; i++){
-        
-        openMapandOut(i, argv, fileout, mapFile, fpMaps, fpOut);
-         if(fpMaps!=NULL){
-            createGraph(fpMaps, g);
-            selectProblems(fpProbsAux, fpOut, g, opt, userInput);
-
-
-            fclose(fpMaps);
-            fclose(fpOut);
-        }
+        /*Open map and outputs file & create graph with map data*/
+        openMapandOut(i, argv, mapFile, &fpMaps, &fpOut);
+        createGraph(fpMaps, g);
+        /*Store problems file's data & sellect and call problem funtion*/
+        problems = extractProbs(opt, fpProbs);
+        selectProblems(problems, fpOut, g, opt, userInput);
+        /*Close map and output files*/
+        fclose(fpMaps);
+        fclose(fpOut);
+        /*Run only once depending on the option chosen*/
         if ((strcmp(opt, "-1oo") == 0) || (strcmp(opt, "-1ao") == 0)) break;
     }
-
+    
     free(userInput);
     fclose(fpProbs);
     return 0;

@@ -8,9 +8,19 @@
 
 #ifndef FILE_DATA_H
 #define FILE_DATA_H
+#include "graphs.h"
 
-void extractProbs ( FILE* fp, char* option, char* prob );
-void openMapandOut(int i, char* argv[], char* fileout, char* mapFile, FILE *fpMaps, FILE* fpout);
-void selectProblems(FILE* fpProbs, FILE* fpout, graph* g, char* option, char* UI);
+typedef struct lista_problemas probs;
+struct lista_problemas {
+    char problema[3];
+    int vertice;
+    int verticeOrK;     //segundo input: vertice ou distancia (k)
+    probs* next;
+};
+
+
+probs* extractProbs (char* opt, FILE* fp);
+void openMapandOut(int i, char* argv[], char* mapFile, FILE** fpMaps, FILE** fpout);
+void selectProblems(probs* headProbs, FILE* fpout, graph* g, char* option, char* UI);
 void printexit(FILE* fpout, char* out, char* UI);
 #endif

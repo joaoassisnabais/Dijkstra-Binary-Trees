@@ -14,6 +14,38 @@
 #include "graphs.h"
 #include "matrix.h"
 #include "problems.h"
+
+#define MAPS 4
+
+probs * extractProbs (char* opt, FILE* fp) {
+
+    probs *output = NULL, *linha = NULL;
+    int i = 0, vertAux;
+    char probAux[3];
+
+    while(fscanf(fp, "%s %d", probAux, &vertAux) != EOF) {    //Ler problema e primeiro vértice
+        if(i == 0) {
+            output = (probs*) malloc(sizeof(probs));
+            output->next = NULL;
+            linha = output;
+        } else {
+            linha->next = (probs*) malloc(sizeof(probs));
+            linha = linha->next;
+            linha->next = NULL;
+        }
+        strcpy(linha->problema, probAux);
+        linha->vertice = vertAux;
+        if(strcmp(linha->problema, "A0") != 0) {
+            if(fscanf(fp, "%d", &linha->verticeOrK) == 0) exit(4);
+        }
+        i++;
+        if(strcmp(opt, "-1oo") == 0 || strcmp(opt, "-1oa") == 0) break;
+    }
+    if(i == 0) exit(4);
+
+    return output;
+}
+
 /*
 void extractProbs ( FILE* fp, char* option, char* prob ){
 
@@ -29,54 +61,49 @@ void extractProbs ( FILE* fp, char* option, char* prob ){
     return;
 }
 */
-void openMapandOut(int i, char* input[], char* fileout, char* mapFile, FILE *fpMaps, FILE* fpout){
+void openMapandOut(int i, char* input[], char* mapFile, FILE** fpMaps, FILE** fpout) {
 
-    char extout[] = ".queries";
-    char *auxMap = NULL;
+    char extout[] = "queries";
+    char *fileout = NULL;
 
     mapFile = input[i]; 
-    fileout = (char *) malloc((strlen(mapFile) + strlen(extout) - 4) * sizeof(char));
-    auxMap = (char *) malloc((strlen(mapFile)- 4) * sizeof(char));
-    for(int i=0; mapFile[i]=='.'; i++) auxMap[i]=mapFile[i]; 
-    strcpy(fileout, auxMap);
+    fileout = (char *) malloc((strlen(mapFile) + strlen(extout) - MAPS + 1));
+    strncpy(fileout, mapFile, strlen(mapFile) - 4);
     strcat(fileout, extout);
+    fileout[strlen(fileout) - 1] = '\0';
 
-    fpMaps = fopen(mapFile, "r");
+    *fpMaps = fopen(mapFile, "r");
     if(fpMaps == NULL) {
         printf("ERROR cannot read map file %s\n", mapFile);
         return;
     }
 
-    fpout = fopen(fileout, "w");
+    *fpout = fopen(fileout, "w");
     if(fpout == NULL) {
         printf("ERROR cannot open exit file %s\n", fileout);
         return;
     }
     free(fileout);
-    free(auxMap);
     return;
 }
 
-void selectProblems(FILE* fpProbs, FILE* fpout, graph* g, char* option, char* UI) {
+void selectProblems(probs* headProbs, FILE* fpout, graph* g, char* option, char* UI) {
 
-    char *mode = NULL, *out=NULL;
-    int v1=0,v2=0,k=0;
+    probs *auxProbs = headProbs;
 
-    while(fscanf(fpProbs,"%s", mode)){    
+    while(auxProbs != NULL){
         
-        fscanf(fpProbs,"%d", &v1);
-        if (strcmp(mode, "A0")==0) {
-            A0 (g,v1);      //saída é um inteiro
-        } else if (strcmp(mode, "B0")==0) {
-            fscanf(fpProbs, "%d",&v2);
-            B0(g, v1, v2);  //saída é um double com 2 casas decimais
-        } else if (strcmp(mode, "C0")==0){
-            C0(g,v1,k);
-        } else if (strcmp(mode, "D0")==0){
+        if (strcmp(auxProbs->problema, "A0")==0) {
+            A0(g,auxProbs->vertice);      //saída é um inteiro
+        } else if (strcmp(auxProbs->problema, "B0")==0) {;
+            B0(g, auxProbs->vertice, auxProbs->verticeOrK);  //saída é um double com 2 casas decimais
+        } else if (strcmp(auxProbs->problema, "C0")==0){
+            C0(g,auxProbs->vertice,auxProbs->verticeOrK);
+        } else if (strcmp(auxProbs->problema, "D0")==0){
             //D0();
         } else exit(3);
 
-        if ((strcmp(option, "-1oo") == 0) || (strcmp(option, "-1oa") == 0)) break;
+        auxProbs = auxProbs->next;
     }
     return;
 }
