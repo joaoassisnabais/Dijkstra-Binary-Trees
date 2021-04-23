@@ -45,26 +45,31 @@ double B0 (graph *g, int v1, int v2){
 int C0 (graph *g, int v1, int k){
 
     int max=g->nv*(g->nv-1)/2;
-    int *reach = (int*) malloc(sizeof(int)*max);
+    int *visited = (int*) malloc(sizeof(int)*max);
 
     if((v1<=g->nv) && (v1>0)){
-        if(k==dfs(g,v1, reach, 0, k)) return 1;
-        else return 0;
+        if(k==dfsDegree(g,v1, visited, 0, k)){
+            free(visited);   
+            return 1;
+        }else{
+            free(visited);
+            return 0;
+        }
     }
-
+    free(visited);
     return -1;
 }
 
-int dfs(graph* g,int v, int *reach, int steps, int k) {
+int dfsDegree(graph* g,int v, int *visited, int degree, int k) {
 	int i, max=g->nv*(g->nv-1)/2;;
-	reach[v]=1;
+	visited[v]=1;
 	for (i=1;i<=max;i++){
-        if(g->matrix[AccessM(v,i)]!=0 && !reach[i]) {
-            steps++;
-            steps=dfs(g,i, reach, steps, k);
-            if(steps == k)goto end;
-            steps--;
+        if(g->matrix[AccessM(v,i)]!=0 && !visited[i]) {
+            degree++;
+            degree=dfs(g,i, visited, degree, k);
+            if(degree == k)goto end;
+            degree--;
         }
 	}
-    end:return steps;
+    end:return degree;
 }
