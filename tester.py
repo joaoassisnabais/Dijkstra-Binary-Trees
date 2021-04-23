@@ -1,36 +1,45 @@
 import os
+from posix import listdir
+from subprocess import call
 
 def make():
     os.system("make")
     return
 
-def getFilenamesInDir(dir):
-    return os.listdir(dir)
+def getFilenamesInDir(directory):
+    filenames = [t for t in os.listdir(directory) if t != '.DS_Store']
+    return filenames
 
 def getWorkingDirs(testdir):
-    dirs = os.listdir(testdir)
+    dirs = [t for t in os.listdir(testdir) if t != '.DS_Store']
     work_dirs = []
-    for dir in dirs:
-        work_dirs.append((testdir + dir))
+    for directory in dirs:
+        work_dirs.append((testdir +"/"+ directory))
     return work_dirs
 
 def solveFor(working_dir, my_program, probs_dir, maps_dir, results_dir):
     os.chdir(working_dir)
+    print(working_dir)
     os.system("rm -rf tmp")
     os.mkdir("tmp")
     os.system("mv " + my_program+" "+"tmp")
-    
+    os.chdir(working_dir+"/tmp")
     pbs = getFilenamesInDir((working_dir+probs_dir))
     maps = getFilenamesInDir((working_dir+maps_dir))
     result_dir = working_dir + results_dir
-    mode = "-" + working_dir[:-3]
+    mode = "-" + working_dir[-3:]
     
     for pb in pbs:
         for mapa in maps:
-            print("Problem " + pb + " Map " + mapa)
-            os.system("./"+my_program +" "+ mode+ " " + pb + " " + mapa)
-            tmp_res = pb[:-5] + 'queries'
-            diff_command = "sdiff " + tmp_res + " " + result_dir +tmp_res+ ' | egrep -n "\||>|<"'
+
+            print("Problem: " + pb + " Map: " + mapa)
+            cmd = "./"+my_program 
+            args = mode+ " " + working_dir +"/"+probs_dir+"/"+pb + " " + working_dir +"/"+maps_dir+"/"+mapa
+            print("Arguments:", args)
+
+            os.system((cmd + " "+ args))
+            tmp_res = mapa[:-4] + 'queries'
+            diff_command = "sdiff " + tmp_res + " " + result_dir+ "/" +tmp_res+ ' | egrep -n "\||>|<"'
             print("Diff command: " + diff_command)
             os.system(diff_command)
             
@@ -50,5 +59,6 @@ if __name__ == "__main__":
         os.system(("mv "+my_program+" "+working_dir))
         solveFor(working_dir, my_program, probs_dir, maps_dir, results_dir)
         os.system(("mv " + my_program + " " + main_dir))
+        os.chdir(working_dir)
 
     os.system("make clean")
