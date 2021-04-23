@@ -89,18 +89,26 @@ void openMapandOut(int i, char* input[], char* mapFile, FILE** fpMaps, FILE** fp
 
 void selectProblems(probs* headProbs, FILE* fpout, graph* g, char* option, char* UI) {
 
+    int solInt = 0;
+    double solDbl = 0;
     probs *auxProbs = headProbs;
+
+    fprintf(fpout, "%s\n\n", UI);
 
     while(auxProbs != NULL){
         
         if (strcmp(auxProbs->problema, "A0")==0) {
-            A0(g,auxProbs->vertice);      //saída é um inteiro
+            solInt = A0(g,auxProbs->vertice);      //saída é um inteiro
+            fprintf(fpout, "%d %d %s %d %d\n\n", g->nv, g->na, auxProbs->problema, auxProbs->vertice, solInt);
         } else if (strcmp(auxProbs->problema, "B0")==0) {;
-            B0(g, auxProbs->vertice, auxProbs->verticeOrK);  //saída é um double com 2 casas decimais
+            solDbl = B0(g, auxProbs->vertice, auxProbs->verticeOrK);  //saída é um double com 2 casas decimais
+            fprintf(fpout, "%d %d %s %d %d %f\n\n", g->nv, g->na, auxProbs->problema, auxProbs->vertice, auxProbs->verticeOrK,solDbl);
         } else if (strcmp(auxProbs->problema, "C0")==0){
-            C0(g,auxProbs->vertice,auxProbs->verticeOrK);
+            solInt = C0(g,auxProbs->vertice,auxProbs->verticeOrK);
+            fprintf(fpout, "%d %d %s %d %d %d\n\n", g->nv, g->na, auxProbs->problema, auxProbs->vertice, auxProbs->verticeOrK,solInt);
         } else if (strcmp(auxProbs->problema, "D0")==0){
-            //D0();
+            //solInt = D0();
+            fprintf(fpout, "%d %d %s %d %d %d\n\n", g->nv, g->na, auxProbs->problema, auxProbs->vertice, auxProbs->verticeOrK,solInt);
         } else exit(3);
 
         auxProbs = auxProbs->next;
@@ -110,7 +118,7 @@ void selectProblems(probs* headProbs, FILE* fpout, graph* g, char* option, char*
 
 void printexit(FILE* fpout, char* out, char* UI){
 
-
+    
 
     return;
 }
