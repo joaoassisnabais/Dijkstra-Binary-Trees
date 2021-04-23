@@ -3,6 +3,7 @@ from posix import listdir
 from subprocess import call
 
 def make():
+    os.system("rm aedmaps")
     os.system("make")
     return
 
@@ -42,6 +43,8 @@ def solveFor(working_dir, my_program, probs_dir, maps_dir, results_dir):
             diff_command = "sdiff " + tmp_res + " " + result_dir+ "/" +tmp_res+ ' | egrep -n "\||>|<"'
             print("Diff command: " + diff_command)
             os.system(diff_command)
+
+    os.system("mv " + my_program+" "+"../.")    
             
     return
 
@@ -62,3 +65,5 @@ if __name__ == "__main__":
         os.chdir(working_dir)
 
     os.system("make clean")
+    os.chdir(main_dir)
+    os.system("rm aedmaps")
