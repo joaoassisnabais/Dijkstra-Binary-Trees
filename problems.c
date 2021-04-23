@@ -17,14 +17,14 @@
 int A0 (graph *g, int vertex){
 
     int degree=0;
-    int max=g->nv*(g->nv-1)/2;
 
-    printMatrix(g->matrix, g->nv);
+    printf("\n");
+    printMatrix(g);
 
-    if((vertex<=g->nv) && (vertex>0)){
-        for (int i=0; i<max; i++){
-            if(i!= ACS(vertex)){
-                if (g->matrix[AccessM(ACS(vertex), i)] != 0)
+    if((vertex <= g->nv) && (vertex > 0)){
+        for (int i = 0; i < g->nv; i++){
+            if(i != ACS(vertex)){
+                if (g->matrix[AccessM(ACS(vertex), i, g)] != 0)
                     degree++;
             }
         }
@@ -39,7 +39,7 @@ double B0 (graph *g, int v1, int v2){
 
     if( ((v1<=g->nv) && (v1>0)) || ((v2<=g->nv) && (v2>0)) ){
         if(v1!=v2)
-            sol=g->matrix[AccessM(ACS(v1),ACS(v2))];
+            sol=g->matrix[AccessM(ACS(v1),ACS(v2), g)];
     }
     if(sol==0) return -1;
 
@@ -48,8 +48,7 @@ double B0 (graph *g, int v1, int v2){
 
 int C0 (graph *g, int v1, int k){
 
-    int max=g->nv*(g->nv-1)/2;
-    int *visited = (int*) malloc(sizeof(int)*max);
+    int *visited = (int*) malloc(sizeof(int)*g->nv);
 
     if((v1<=g->nv) && (v1>0)){
         if(k==dfsDegree(g,ACS(v1), visited, 0, k)){
@@ -65,10 +64,15 @@ int C0 (graph *g, int v1, int k){
 }
 
 int dfsDegree(graph* g,int v, int *visited, int steps, int k) {
-	int i, max=g->nv*(g->nv-1)/2;
+	int i;
+
+    printf("\n\n");
+    printMatrix(g);
+    printf("\n%f\n", g->matrix[AccessM(7,7, g)]);
+
 	visited[v]=1;
-	for (i=1;i<=max;i++){
-        if(g->matrix[AccessM(v,i)]!=0 && !visited[i]) {
+	for (i = 0;i < g->nv;i++){
+        if(g->matrix[AccessM(v,i,g)] != 0 && !visited[i]) {
             steps++;
             steps=dfsDegree(g,i, visited, steps, k);
             if(steps == k)break;

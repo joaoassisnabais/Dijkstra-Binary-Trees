@@ -41,7 +41,7 @@ void createGraph(FILE* fp, graph* g){
         fscanf(fp,"%d", &va);
         fscanf(fp,"%d", &vb);
         fscanf(fp,"%lf", &cost);
-        g->matrix[AccessM(ACS(va),ACS(vb))] = cost;
+        g->matrix[AccessM(ACS(va),ACS(vb), g)] = cost;
     }
     return;
 }

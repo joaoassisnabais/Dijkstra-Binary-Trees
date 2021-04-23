@@ -15,22 +15,25 @@
 #include "matrix.h"
 #include "problems.h"
 
-void printMatrix(double* matrix, int nv) {
-    for(int i = 0; i < nv; i++) {
-        for(int j = 0; j < nv; j++) {
+void printMatrix(graph* g) {
+    for(int i = 0; i < g->nv; i++) {
+        for(int j = 0; j < g->nv; j++) {
             if(i != j)
-                printf("%.2f ",matrix[AccessM(i, j)]);
+                printf("%.2f  ",g->matrix[AccessM(i, j, g)]);
             else
-                printf("0.00 ");
+                printf("0.00  ");
         }
         printf("\n");
     }
 }
 
-int AccessM(int va, int vb){
+int AccessM(int va, int vb, graph* g){
     int result, min, max;
 
-    if (va > vb){
+    if(va == vb) {
+        return (g->nv*(g->nv-1)/2) + 1;
+    }
+    else if (va > vb){
         min=vb;
         max=va;
     }else{
@@ -42,12 +45,12 @@ int AccessM(int va, int vb){
 }
 
 void createMandV(graph* g, int numV){
-    g->matrix = (double*) malloc(sizeof(double)*(numV*(numV-1)/2));
+    g->matrix = (double*) malloc(sizeof(double)*((numV*(numV-1)/2) + 1));
     g->c = malloc(sizeof(g->c)*numV*27);
     return;
 }
 
 void IniMatrix(double* matrix, int numV){
-    int max=numV*(numV-1)/2;
+    int max = (numV*(numV-1)/2) + 1;
     for(int i=0; i<max; i++) matrix[i]=0;
 }
