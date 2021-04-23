@@ -21,6 +21,5 @@ struct lista_problemas {
 
 probs* extractProbs (char* opt, FILE* fp);
 void openMapandOut(int i, char* argv[], char* mapFile, FILE** fpMaps, FILE** fpout);
-void selectProblems(probs* headProbs, FILE* fpout, graph* g, char* option, char* UI);
-void printexit(FILE* fpout, char* out, char* UI);
+void selectProblems(probs* headProbs, FILE* fpout, graph* g, char* UI);
 #endif

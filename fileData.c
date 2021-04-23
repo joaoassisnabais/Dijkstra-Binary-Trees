@@ -87,7 +87,7 @@ void openMapandOut(int i, char* input[], char* mapFile, FILE** fpMaps, FILE** fp
     return;
 }
 
-void selectProblems(probs* headProbs, FILE* fpout, graph* g, char* option, char* UI) {
+void selectProblems(probs* headProbs, FILE* fpout, graph* g, char* UI) {
 
     int solInt = 0;
     double solDbl = 0;
@@ -113,12 +113,5 @@ void selectProblems(probs* headProbs, FILE* fpout, graph* g, char* option, char*
 
         auxProbs = auxProbs->next;
     }
-    return;
-}
-
-void printexit(FILE* fpout, char* out, char* UI){
-
-    
-
     return;
 }

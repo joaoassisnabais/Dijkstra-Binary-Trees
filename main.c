@@ -52,7 +52,7 @@ int main (int argc, char *argv[]){
         createGraph(fpMaps, g);
         /*Store problems file's data & sellect and call problem funtion*/
         problems = extractProbs(opt, fpProbs);
-        selectProblems(problems, fpOut, g, opt, userInput);
+        selectProblems(problems, fpOut, g, userInput);
         /*Close map and output files*/
         fclose(fpMaps);
         fclose(fpOut);
