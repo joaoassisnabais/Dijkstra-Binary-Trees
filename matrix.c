@@ -15,15 +15,27 @@
 #include "matrix.h"
 #include "problems.h"
 
+void printMatrix(double* matrix, int nv) {
+    for(int i = 0; i < nv; i++) {
+        for(int j = 0; j < nv; j++) {
+            if(i != j)
+                printf("%.2f ",matrix[AccessM(i, j)]);
+            else
+                printf("0.00 ");
+        }
+        printf("\n");
+    }
+}
+
 int AccessM(int va, int vb){
     int result, min, max;
 
     if (va > vb){
-        min=vb-1;
-        max=va-1;
+        min=vb;
+        max=va;
     }else{
-        min=va-1;
-        max=vb-1;
+        min=va;
+        max=vb;
     }
     result= min + max*(max-1)/2;
     return result;

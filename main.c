@@ -18,7 +18,7 @@
 int main (int argc, char *argv[]){
 
     FILE *fpProbs, *fpMaps = NULL, *fpOut = NULL;
-    char *opt, *probFile, *mapFile = NULL, *fileout = NULL, *userInput = NULL;
+    char *opt, *probFile, *mapFile = NULL, *userInput = NULL;
     int UIsz=0;
     graph *g;
     g = (graph*) malloc(sizeof(graph));

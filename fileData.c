@@ -70,7 +70,6 @@ void openMapandOut(int i, char* input[], char* mapFile, FILE** fpMaps, FILE** fp
     fileout = (char *) malloc((strlen(mapFile) + strlen(extout) - MAPS + 1));
     strncpy(fileout, mapFile, strlen(mapFile) - 4);
     strcat(fileout, extout);
-    fileout[strlen(fileout) - 1] = '\0';
 
     *fpMaps = fopen(mapFile, "r");
     if(fpMaps == NULL) {

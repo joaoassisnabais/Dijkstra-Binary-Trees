@@ -19,10 +19,13 @@ int A0 (graph *g, int vertex){
     int degree=0;
     int max=g->nv*(g->nv-1)/2;
 
+    printMatrix(g->matrix, g->nv);
+
     if((vertex<=g->nv) && (vertex>0)){
         for (int i=0; i<max; i++){
-            if(i!=vertex){
-                if (g->matrix[AccessM(vertex, i)] != 0) degree++;
+            if(i!= ACS(vertex)){
+                if (g->matrix[AccessM(ACS(vertex), i)] != 0)
+                    degree++;
             }
         }
     }
@@ -35,7 +38,8 @@ double B0 (graph *g, int v1, int v2){
     double sol=0;
 
     if( ((v1<=g->nv) && (v1>0)) || ((v2<=g->nv) && (v2>0)) ){
-        if(v1!=v2) sol=g->matrix[AccessM(v1,v2)];
+        if(v1!=v2)
+            sol=g->matrix[AccessM(ACS(v1),ACS(v2))];
     }
     if(sol==0) return -1;
 
@@ -48,7 +52,7 @@ int C0 (graph *g, int v1, int k){
     int *visited = (int*) malloc(sizeof(int)*max);
 
     if((v1<=g->nv) && (v1>0)){
-        if(k==dfsDegree(g,v1, visited, 0, k)){
+        if(k==dfsDegree(g,ACS(v1), visited, 0, k)){
             free(visited);   
             return 1;
         }else{
@@ -60,13 +64,13 @@ int C0 (graph *g, int v1, int k){
     return -1;
 }
 
-int dfs(graph* g,int v, int *reach, int steps, int k) {
+int dfsDegree(graph* g,int v, int *visited, int steps, int k) {
 	int i, max=g->nv*(g->nv-1)/2;
-	reach[v]=1;
+	visited[v]=1;
 	for (i=1;i<=max;i++){
-        if(g->matrix[AccessM(v,i)]!=0 && !reach[i]) {
+        if(g->matrix[AccessM(v,i)]!=0 && !visited[i]) {
             steps++;
-            steps=dfs(g,i, reach, steps, k);
+            steps=dfsDegree(g,i, visited, steps, k);
             if(steps == k)break;
             steps--;
         }
