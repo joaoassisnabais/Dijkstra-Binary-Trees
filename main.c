@@ -45,13 +45,14 @@ int main (int argc, char *argv[]){
         strcat(userInput,argv[i]);
         strcat(userInput, " ");
     }
+    
+    problems = extractProbs(opt, fpProbs);
     /*Cicle to go through all maps*/
     for (int i=3; i<argc ; i++){
         /*Open map and outputs file & create graph with map data*/
         openMapandOut(i, argv, mapFile, &fpMaps, &fpOut);
         createGraph(fpMaps, g);
         /*Store problems file's data & sellect and call problem funtion*/
-        problems = extractProbs(opt, fpProbs);
         selectProblems(problems, fpOut, g, userInput);
         /*Close map and output files*/
         fclose(fpMaps);

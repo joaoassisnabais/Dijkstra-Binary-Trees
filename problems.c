@@ -66,9 +66,8 @@ int C0 (graph *g, int v1, int k){
 int dfsDegree(graph* g,int v, int *visited, int steps, int k) {
 	int i;
 
-    printf("\n\n");
-    printMatrix(g);
-    printf("\n%f\n", g->matrix[AccessM(7,7, g)]);
+    //printf("\n\n");
+    //printMatrix(g);
 
 	visited[v]=1;
 	for (i = 0;i < g->nv;i++){

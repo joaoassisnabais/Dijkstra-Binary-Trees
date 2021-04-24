@@ -18,13 +18,12 @@ def getWorkingDirs(testdir):
         work_dirs.append((testdir +"/"+ directory))
     return work_dirs
 
-def solveFor(working_dir, my_program, probs_dir, maps_dir, results_dir):
-    os.chdir(working_dir)
-    print(working_dir)
-    os.system("rm -rf tmp")
-    os.mkdir("tmp")
-    os.system("mv " + my_program+" "+"tmp")
-    os.chdir(working_dir+"/tmp")
+def removeQueries(mapsdir):
+    os.chdir(mapsdir)
+    os.system("rm *.queries")
+    return
+
+def solveFor(working_dir, my_program, probs_dir, maps_dir, results_dir, main_dir):
     pbs = getFilenamesInDir((working_dir+probs_dir))
     maps = getFilenamesInDir((working_dir+maps_dir))
     result_dir = working_dir + results_dir
@@ -40,11 +39,9 @@ def solveFor(working_dir, my_program, probs_dir, maps_dir, results_dir):
 
             os.system((cmd + " "+ args))
             tmp_res = mapa[:-4] + 'queries'
-            diff_command = "sdiff " + tmp_res + " " + result_dir+ "/" +tmp_res+ ' | egrep -n "\||>|<"'
+            diff_command = "sdiff " + working_dir + maps_dir +"/"+tmp_res + " " + result_dir+ "/" +tmp_res+ ' | egrep -n "\||>|<"'
             print("Diff command: " + diff_command)
             os.system(diff_command)
-
-    os.system("mv " + my_program+" "+"../.")    
             
     return
 
@@ -57,13 +54,14 @@ if __name__ == "__main__":
     results_dir = "/results"
     working_dirs = getWorkingDirs((os.getcwd() + "/test1"))
     working_dirs_names = getFilenamesInDir(main_dir + "/test1")
+    
     for working_dir in working_dirs:
-        print("Solving probs in dir "+ working_dir)
-        os.system(("mv "+my_program+" "+working_dir))
-        solveFor(working_dir, my_program, probs_dir, maps_dir, results_dir)
-        os.system(("mv " + my_program + " " + main_dir))
-        os.chdir(working_dir)
+        removeQueries(working_dir+maps_dir)
+        os.chdir(main_dir)
+        print("Solving probs for files in: "+ working_dir)
+        solveFor(working_dir, my_program, probs_dir, maps_dir, results_dir, main_dir)
+        removeQueries(working_dir+maps_dir)
 
-    os.system("make clean")
     os.chdir(main_dir)
+    os.system("make clean")
     os.system("rm aedmaps")
