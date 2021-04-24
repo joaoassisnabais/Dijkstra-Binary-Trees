@@ -46,21 +46,21 @@ double B0 (graph *g, int v1, int v2){
 int C0 (graph *g, int v1, int k){
 
     int *visited = (int*) calloc(g->nv, sizeof(int));
+    int *queue = (int*) calloc(g->nv, sizeof(int));
+    int sol=0,level=0;
 
     if((v1<=g->nv) && (v1>0)){
-        if(k==dfsDegree(g,ACS(v1), visited, 0, k)){
-            free(visited);   
-            return 1;
-        }else{
-            free(visited);
-            return 0;
-        }
-    }
+        bfsDegree(g,ACS(v1), visited, queue, &level, -1, 0);
+        if(k<=level)sol=1;
+        else sol=0;
+    }else sol=-1;
+
     free(visited);
-    return -1;
+    free(queue);
+    return sol;
 }
 
-int dfsDegree(graph* g,int v, int *visited, int steps, int k) {
+int dfsDegree(graph* g, int v, int *visited, int steps, int k) {
 	int i;
 
 	visited[v]=1;
@@ -75,4 +75,21 @@ int dfsDegree(graph* g,int v, int *visited, int steps, int k) {
         }
 	}
     return steps;
+}
+
+void bfsDegree(graph* g, int v, int *visited, int *queue, int *level, int qindex, int order){
+
+    int j=0, i;
+    for(i=0; i<g->nv; i++){
+        if(g->matrix[AccessM(v,i,g)!=0 && !visited[i]]){
+            queue[++qindex]=i;
+            if(j==0){ 
+                level++;
+                j++;
+            }
+            visited[i]=1;
+        }
+    }
+    if(order<=qindex)
+        bfsDegree(g,queue[order++],visited,queue,level,qindex,order);    
 }
