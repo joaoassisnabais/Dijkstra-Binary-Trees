@@ -72,8 +72,10 @@ int dfsDegree(graph* g,int v, int *visited, int steps, int k) {
 
 	visited[v]=1;
 	for (i = 0;i < g->nv;i++){
+        if(steps == k)break;
         if(g->matrix[AccessM(v,i,g)] != 0 && !visited[i]) {
             steps++;
+            if(steps == k)break;
             steps=dfsDegree(g,i, visited, steps, k);
             if(steps == k)break;
             steps--;
