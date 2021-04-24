@@ -42,6 +42,7 @@ def solveFor(working_dir, my_program, probs_dir, maps_dir, results_dir, main_dir
             diff_command = "sdiff " + working_dir + maps_dir +"/"+tmp_res + " " + result_dir+ "/" +tmp_res+ ' | egrep -n "\||>|<"'
             print("Diff command: " + diff_command)
             os.system(diff_command)
+            print("\n")
             
     return
 

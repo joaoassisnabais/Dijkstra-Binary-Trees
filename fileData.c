@@ -100,7 +100,10 @@ void selectProblems(probs* headProbs, FILE* fpout, graph* g, char* UI) {
             fprintf(fpout, "%d %d %s %d %d\n\n", g->nv, g->na, auxProbs->problema, auxProbs->vertice, solInt);
         } else if (strcmp(auxProbs->problema, "B0")==0) {;
             solDbl = B0(g, auxProbs->vertice, auxProbs->verticeOrK);  //saída é um double com 2 casas decimais
-            fprintf(fpout, "%d %d %s %d %d %f\n\n", g->nv, g->na, auxProbs->problema, auxProbs->vertice, auxProbs->verticeOrK,solDbl);
+            if(solDbl == -1)
+                fprintf(fpout, "%d %d %s %d %d -1\n\n", g->nv, g->na, auxProbs->problema, auxProbs->vertice, auxProbs->verticeOrK);
+            else
+                fprintf(fpout, "%d %d %s %d %d %.2f\n\n", g->nv, g->na, auxProbs->problema, auxProbs->vertice, auxProbs->verticeOrK,solDbl);
         } else if (strcmp(auxProbs->problema, "C0")==0){
             solInt = C0(g,auxProbs->vertice,auxProbs->verticeOrK);
             fprintf(fpout, "%d %d %s %d %d %d\n\n", g->nv, g->na, auxProbs->problema, auxProbs->vertice, auxProbs->verticeOrK,solInt);
