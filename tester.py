@@ -27,7 +27,7 @@ def solveFor(working_dir, my_program, probs_dir, maps_dir, results_dir, main_dir
     pbs = getFilenamesInDir((working_dir+probs_dir))
     maps = getFilenamesInDir((working_dir+maps_dir))
     result_dir = working_dir + results_dir
-    mode = "-" + working_dir[-3:]
+    mode = "-" + working_dir[-4:]
     
     for pb in pbs:
         for mapa in maps:

@@ -18,9 +18,6 @@ int A0 (graph *g, int vertex){
 
     int degree=0;
 
-    printf("\n");
-    printMatrix(g);
-
     if((vertex <= g->nv) && (vertex > 0)){
         for (int i = 0; i < g->nv; i++){
             if(i != ACS(vertex)){
@@ -65,9 +62,6 @@ int C0 (graph *g, int v1, int k){
 
 int dfsDegree(graph* g,int v, int *visited, int steps, int k) {
 	int i;
-
-    //printf("\n\n");
-    //printMatrix(g);
 
 	visited[v]=1;
 	for (i = 0;i < g->nv;i++){

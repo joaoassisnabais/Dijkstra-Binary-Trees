@@ -61,14 +61,13 @@ void extractProbs ( FILE* fp, char* option, char* prob ){
     return;
 }
 */
-void openMapandOut(int i, char* input[], char* mapFile, FILE** fpMaps, FILE** fpout) {
+void openMapandOut(int i, char* mapFile, FILE** fpMaps, FILE** fpout) {
 
     char extout[] = "queries";
     char *fileout = NULL;
 
-    mapFile = input[i]; 
     fileout = (char *) malloc((strlen(mapFile) + strlen(extout) - MAPS + 1));
-    strncpy(fileout, mapFile, strlen(mapFile) - 4);
+    snprintf(fileout, strlen(mapFile)- MAPS + 1, "%s", mapFile);
     strcat(fileout, extout);
 
     *fpMaps = fopen(mapFile, "r");

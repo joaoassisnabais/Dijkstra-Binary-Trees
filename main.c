@@ -18,7 +18,7 @@
 int main (int argc, char *argv[]){
 
     FILE *fpProbs, *fpMaps = NULL, *fpOut = NULL;
-    char *opt, *probFile, *mapFile = NULL, *userInput = NULL;
+    char *opt, *probFile, *userInput = NULL;
     int UIsz=0;
     graph *g;
     g = (graph*) malloc(sizeof(graph));
@@ -50,7 +50,7 @@ int main (int argc, char *argv[]){
     /*Cicle to go through all maps*/
     for (int i=3; i<argc ; i++){
         /*Open map and outputs file & create graph with map data*/
-        openMapandOut(i, argv, mapFile, &fpMaps, &fpOut);
+        openMapandOut(i, argv[i], &fpMaps, &fpOut);
         createGraph(fpMaps, g);
         /*Store problems file's data & sellect and call problem funtion*/
         selectProblems(problems, fpOut, g, userInput);
