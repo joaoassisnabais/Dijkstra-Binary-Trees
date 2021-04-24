@@ -45,7 +45,7 @@ double B0 (graph *g, int v1, int v2){
 
 int C0 (graph *g, int v1, int k){
 
-    int *visited = (int*) malloc(sizeof(int)*g->nv);
+    int *visited = (int*) calloc(g->nv, sizeof(int));
 
     if((v1<=g->nv) && (v1>0)){
         if(k==dfsDegree(g,ACS(v1), visited, 0, k)){
