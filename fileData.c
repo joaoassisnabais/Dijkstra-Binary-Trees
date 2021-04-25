@@ -82,7 +82,7 @@ void selectProblems(probs* headProbs, FILE* fpout, graph* g) {
             solInt = A0(g,auxProbs->vertice);      //saída é um inteiro
             fprintf(fpout, "%d %d %s %d %d\n\n", g->nv, g->na, auxProbs->problema, auxProbs->vertice, solInt);
         } else if (strcmp(auxProbs->problema, "B0")==0) {;
-            solDbl = B0(g, auxProbs->vertice, auxProbs->verticeOrK);  //saída é um double com 2 casas decimais
+            solDbl = B0(g, auxProbs->vertice, auxProbs->verticeOrK);  //saída é um double c/ 2 casas decimais
             if(solDbl == -1)
                 fprintf(fpout, "%d %d %s %d %d -1\n\n", g->nv, g->na, auxProbs->problema, auxProbs->vertice, auxProbs->verticeOrK);
             else
