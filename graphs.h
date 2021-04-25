@@ -19,6 +19,6 @@ struct _Graph
 
 };
 
-void createGraph(FILE* fp, graph* g);
+void createGraph(FILE** fp, graph* g);
 
 #endif

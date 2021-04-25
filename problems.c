@@ -50,14 +50,33 @@ int C0 (graph *g, int v1, int k){
     int sol=0,level=0;
 
     if((v1<=g->nv) && (v1>0)){
-        bfsDegree(g,ACS(v1), visited, queue, &level, -1, 0);
-        if(k<=level)sol=1;
+        bfsDegree(g,ACS(v1), visited, queue, &level, -1, -1);
+        if(k < level && k >= 0) sol=1;
         else sol=0;
     }else sol=-1;
 
     free(visited);
     free(queue);
     return sol;
+}
+
+void bfsDegree(graph* g, int v, int *visited, int *queue, int *level, int qindex, int order){
+
+    int j=0, i;
+    order++;
+    for(i=0; i<g->nv; i++){
+        if(g->matrix[AccessM(v,i,g)]!=0 && !visited[i]){
+            queue[++qindex]=i;
+            if(j==0){ 
+                (*level)++;
+                j++;
+            }
+            visited[i]=1;
+        }
+    }
+    if(order<=qindex){
+        bfsDegree(g,queue[order],visited,queue,level,qindex,order);
+    }
 }
 
 int dfsDegree(graph* g, int v, int *visited, int steps, int k) {
@@ -75,21 +94,4 @@ int dfsDegree(graph* g, int v, int *visited, int steps, int k) {
         }
 	}
     return steps;
-}
-
-void bfsDegree(graph* g, int v, int *visited, int *queue, int *level, int qindex, int order){
-
-    int j=0, i;
-    for(i=0; i<g->nv; i++){
-        if(g->matrix[AccessM(v,i,g)!=0 && !visited[i]]){
-            queue[++qindex]=i;
-            if(j==0){ 
-                level++;
-                j++;
-            }
-            visited[i]=1;
-        }
-    }
-    if(order<=qindex)
-        bfsDegree(g,queue[order++],visited,queue,level,qindex,order);    
 }

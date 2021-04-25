@@ -1,5 +1,5 @@
 import os
-from posix import listdir
+from stringcolor import *
 from subprocess import call
 
 def make():
@@ -32,15 +32,15 @@ def solveFor(working_dir, my_program, probs_dir, maps_dir, results_dir, main_dir
     for pb in pbs:
         for mapa in maps:
 
-            print("Problem: " + pb + " Map: " + mapa)
+            print(cs("Problem: ", "orchid")+ pb, "\n" + cs("Map: ", "orchid") + mapa)
             cmd = "./"+my_program 
             args = mode+ " " + working_dir +"/"+probs_dir+"/"+pb + " " + working_dir +"/"+maps_dir+"/"+mapa
-            print("Arguments:", args)
+            print(cs("Arguments:","orchid"), args)
 
             os.system((cmd + " "+ args))
             tmp_res = mapa[:-4] + 'queries'
             diff_command = "sdiff " + working_dir + maps_dir +"/"+tmp_res + " " + result_dir+ "/" +tmp_res+ ' | egrep -n "\||>|<"'
-            print("Diff command: " + diff_command)
+            print(cs("Diff Command: ", "orchid") + diff_command)
             os.system(diff_command)
             print("\n")
             
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     for working_dir in working_dirs:
         removeQueries(working_dir+maps_dir)
         os.chdir(main_dir)
-        print("Solving probs for files in: "+ working_dir)
+        print(cs("Solving probs for files in: ", "orchid")+ working_dir)
         solveFor(working_dir, my_program, probs_dir, maps_dir, results_dir, main_dir)
         removeQueries(working_dir+maps_dir)
 

@@ -46,22 +46,7 @@ probs * extractProbs (char* opt, FILE* fp) {
     return output;
 }
 
-/*
-void extractProbs ( FILE* fp, char* option, char* prob ){
-
-    FILE *aux = fp;
-    char buffer[100];
-
-    while(fgets(buffer, 100, aux)!=NULL){
-
-        strcat(prob, buffer);
-        strcat(prob, "\n" );
-        if ((strcmp(option, "-1oo") == 0) || (strcmp(option, "-1oa") == 0)) break;
-    }
-    return;
-}
-*/
-void openMapandOut(int i, char* mapFile, FILE** fpMaps, FILE** fpout) {
+void openMapandOut(char* mapFile, FILE** fpMaps, FILE** fpout) {
 
     char extout[] = "queries";
     char *fileout = NULL;
@@ -85,13 +70,11 @@ void openMapandOut(int i, char* mapFile, FILE** fpMaps, FILE** fpout) {
     return;
 }
 
-void selectProblems(probs* headProbs, FILE* fpout, graph* g, char* UI) {
+void selectProblems(probs* headProbs, FILE* fpout, graph* g) {
 
     int solInt = 0;
     double solDbl = 0;
     probs *auxProbs = headProbs;
-
-    fprintf(fpout, "%s\n\n", UI);
 
     while(auxProbs != NULL){
         

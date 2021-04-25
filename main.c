@@ -25,7 +25,7 @@ int main (int argc, char *argv[]){
     probs* problems;
 
     /*Number of cmd line arguments verification*/
-    if(argc<4){
+    if(argc != 4){
         printf("Not enough arguments \n");
         exit(1);
     }
@@ -45,23 +45,24 @@ int main (int argc, char *argv[]){
         strcat(userInput,argv[i]);
         strcat(userInput, " ");
     }
-    
+    /*Store problems file's data*/
     problems = extractProbs(opt, fpProbs);
+    /*Open map and outputs file*/
+    openMapandOut(argv[3], &fpMaps, &fpOut);
+    fprintf(fpOut, "%s\n\n", userInput);
     /*Cicle to go through all maps*/
-    for (int i=3; i<argc ; i++){
-        /*Open map and outputs file & create graph with map data*/
-        openMapandOut(i, argv[i], &fpMaps, &fpOut);
-        createGraph(fpMaps, g);
-        /*Store problems file's data & sellect and call problem funtion*/
-        selectProblems(problems, fpOut, g, userInput);
-        /*Close map and output files*/
-        fclose(fpMaps);
-        fclose(fpOut);
+    while(fscanf(fpMaps,"%d %d", &g->nv, &g->na) != EOF) {
+        /*Create graph with map data*/
+        createGraph(&fpMaps, g);
+        /*Select and call problem funtion*/
+        selectProblems(problems, fpOut, g);
         /*Run only once depending on the option chosen*/
         if ((strcmp(opt, "-1oo") == 0) || (strcmp(opt, "-1ao") == 0)) break;
     }
-    
+    /*Close map, problems and output files*/
     free(userInput);
+    fclose(fpMaps);
     fclose(fpProbs);
+    fclose(fpOut);
     return 0;
 }
