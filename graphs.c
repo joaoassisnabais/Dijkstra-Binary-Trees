@@ -18,19 +18,19 @@
 void createGraph(FILE** fp, graph* g){
 
     char str[30];
-    int i=0, j=0, va, vb, l;
+    int i = 0, nVer = 0, va, vb, len;       //nVer: nº do vértice
     double cost;
 
     createMandV(g, g->nv);
 
     //colocar os valores dos ids na matriz
     for (i=0; i<g->nv; i++){
-        if(fscanf(*fp,"%d", &j) == 0) exit(0);
+        if(fscanf(*fp,"%d", &nVer) == 0) exit(0);
         if(fscanf(*fp, "%s", str) == 0) exit(0);
-        l = strlen(str) + 1;
-        g->c[j] = (char*) malloc(l);
-        strcpy(g->c[j], str);//fazer define -1
-        g->c[j][l-1] = '\0';
+        len = strlen(str) + 1;
+        g->c[nVer] = (char*) malloc(len);
+        strcpy(g->c[nVer], str);           //fazer define -1
+        g->c[nVer][len-1] = '\0';
     }
     IniMatrix(g->matrix, g->nv);
     
@@ -46,32 +46,38 @@ void createGraph(FILE** fp, graph* g){
 
 void freeGraph(graph* g) {
 
+    for(int i = 0; i < g->nv; i++) {
+        free(g->c[i]); 
+    }
+    free(g->c);
     free(g->matrix);
-    
+    free(g);
 }
 
 void qPop(queue *q){
 
-qnode *auxNode = q->top;
-int aux = q->top->v;
-q->top = q->top->next;
-free(auxNode);
+    qnode *auxNode = q->top;
+    int aux = q->top->v;
+    q->top = q->top->next;
+    free(auxNode);
 
 }
 
 queue * qAdd(queue *q, int v){
 
-    if(q == NULL){
+    if(q==NULL){
         q = (queue *) malloc(sizeof(queue));
         q->top = (qnode *) malloc(sizeof(qnode));
         q->top->v = v;
         q->top->next = NULL;
         q->bottom = q->top;
+        q->top->steps = 0;
     }else{
         q->bottom->next = (qnode *) malloc(sizeof(qnode));
         q->bottom = q->bottom->next;
         q->bottom->v = v;
         q->bottom->next = NULL;
+        q->bottom->steps = q->top->steps++;
     }
     return q;
 }

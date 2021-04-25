@@ -45,42 +45,41 @@ double B0 (graph *g, int v1, int v2){
 
 int C0 (graph *g, int v1, int k){
 
-    int *visited = (int*) calloc(g->nv, sizeof(int));
-    int *queue = (int*) calloc(g->nv, sizeof(int));
-    int sol=0,level=0;
+    int sol=0,steps=0;
 
     if((v1<=g->nv) && (v1>0)){
-        bfsDegree(g,ACS(v1), visited, queue, &level, -1, -1);
-        if(k < level && k >= 0) sol=1;
+        steps=bfsMatrix(g,v1);
+        if(k <= steps && k >= 0) sol=1;
         else sol=0;
     }else sol=-1;
 
-    free(visited);
-    free(queue);
     return sol;
 }
 
-void bfsMatrix(graph *g, int v) {
+int bfsMatrix(graph *g, int v) {
     
     queue *q = NULL;
+    int *visited = (int *) calloc(g->nv,sizeof(int));
+    //int *added = (int *) calloc(g->nv,sizeof(int));
+    int top=0,maxSteps=0;
     
     qAdd(q,v);
     while (q->top != NULL){
-        if (q->top->visited == 0){
-            q->top->visited = 1;
-            for (z = 0; z<g->v; v++){
-                if (g->matrix[AccessM()] != 0){
-                    if (not visited){
-                        ex = 
-                        ex->v = e->w;
-                        ex->w = v;
-                        qAdd(q, ex);
-                    }
+        if (visited[q->top->v] == 0){
+            visited[q->top->v] = 1;
+            for (int i=0; i<g->nv; i++){
+                if ((g->matrix[AccessM(q->top->v,i,g)] != 0) && (visited[i]==0)){
+                        qAdd(q,i);
+                    if(q->top->steps > maxSteps) 
+                        maxSteps = q->top->steps;
                 }
             }
         }
         qPop(q);
     }
+    //free(added);
+    free(visited);
     queueErase(q);
+    return maxSteps;
 }
 

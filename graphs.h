@@ -22,7 +22,7 @@ struct _Graph
 
 struct _QueueNode{
     int v;
-    int visited;
+    int steps;
     struct _q * next;
 };
 
@@ -33,7 +33,7 @@ struct _Queue {
 
 void createGraph(FILE** fp, graph* g);
 void freeGraph(graph* g);
-queue * qAdd(queue *q, int item);
+queue * qAdd(queue *q, int i);
 int qet(queue * q);
 int qExist(queue * q);
 void qFree(queue * q);

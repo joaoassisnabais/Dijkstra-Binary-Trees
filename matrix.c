@@ -46,7 +46,7 @@ int AccessM(int va, int vb, graph* g){
 
 void createMandV(graph* g, int numV){
     g->matrix = (double*) malloc(sizeof(double)*((numV*(numV-1)/2) + 1));
-    g->c = malloc(sizeof(g->c)*numV*27);
+    g->c = (char**) malloc(sizeof(char*) * numV);
     return;
 }
 
