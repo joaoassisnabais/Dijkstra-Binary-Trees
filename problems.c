@@ -48,7 +48,7 @@ int C0 (graph *g, int v1, int k){
     int sol=0,steps=0;
 
     if((v1<=g->nv) && (v1>0)){
-        steps=bfsMatrix(g,v1);
+        steps=bfsMatrix(g,ACS(v1));
         if(k <= steps && k >= 0) sol=1;
         else sol=0;
     }else sol=-1;
@@ -63,15 +63,15 @@ int bfsMatrix(graph *g, int v) {
     //int *added = (int *) calloc(g->nv,sizeof(int));
     int maxSteps=0;
     
-    qAdd(q,v);
+    q = qAdd(q,v);
     while (q->top != NULL){
         if (visited[q->top->v] == 0){
             visited[q->top->v] = 1;
+            if(q->top->steps > maxSteps) 
+                maxSteps = q->top->steps;
             for (int i=0; i<g->nv; i++){
                 if ((g->matrix[AccessM(q->top->v,i,g)] != 0) && (visited[i]==0)){
-                        qAdd(q,i);
-                    if(q->top->steps > maxSteps) 
-                        maxSteps = q->top->steps;
+                        q = qAdd(q,i);
                 }
             }
         }

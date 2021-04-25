@@ -28,9 +28,9 @@ void createGraph(FILE** fp, graph* g){
         if(fscanf(*fp,"%d", &nVer) == 0) exit(0);
         if(fscanf(*fp, "%s", str) == 0) exit(0);
         len = strlen(str) + 1;
-        g->c[nVer] = (char*) malloc(len);
-        strcpy(g->c[nVer], str);           //fazer define -1
-        g->c[nVer][len-1] = '\0';
+        g->c[ACS(nVer)] = (char*) malloc(len);
+        strcpy(g->c[ACS(nVer)], str);           //fazer define -1
+        g->c[ACS(nVer)][len-1] = '\0';
     }
     IniMatrix(g->matrix, g->nv);
     
@@ -75,7 +75,7 @@ queue * qAdd(queue *q, int v){
         q->bottom = q->bottom->next;
         q->bottom->v = v;
         q->bottom->next = NULL;
-        q->bottom->steps = q->top->steps++;
+        q->bottom->steps = q->top->steps+1;
     }
     return q;
 }

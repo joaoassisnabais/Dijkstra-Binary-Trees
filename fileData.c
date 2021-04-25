@@ -92,7 +92,7 @@ void selectProblems(probs* headProbs, FILE* fpout, graph* g) {
             fprintf(fpout, "%d %d %s %d %d %d\n\n", g->nv, g->na, auxProbs->problema, auxProbs->vertice, auxProbs->verticeOrK,solInt);
         } else if (strcmp(auxProbs->problema, "D0")==0){
             //solInt = D0();
-            fprintf(fpout, "%d %d %s %d %d %d\n\n", g->nv, g->na, auxProbs->problema, auxProbs->vertice, auxProbs->verticeOrK,solInt);
+            //fprintf(fpout, "%d %d %s %d %d %d\n\n", g->nv, g->na, auxProbs->problema, auxProbs->vertice, auxProbs->verticeOrK,solInt);
         } else exit(3);
 
         auxProbs = auxProbs->next;
