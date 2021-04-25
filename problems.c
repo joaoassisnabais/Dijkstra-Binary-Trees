@@ -34,7 +34,7 @@ double B0 (graph *g, int v1, int v2){
 
     double sol=0;
 
-    if( ((v1<=g->nv) && (v1>0)) || ((v2<=g->nv) && (v2>0)) ){
+    if( ((v1<=g->nv) && (v1>0)) && ((v2<=g->nv) && (v2>0)) ){
         if(v1!=v2)
             sol=g->matrix[AccessM(ACS(v1),ACS(v2), g)];
     }
