@@ -45,19 +45,17 @@ void createGraph(FILE** fp, graph* g){
 }
 
 void freeGraph(graph* g) {
-
+    
     for(int i = 0; i < g->nv; i++) {
         free(g->c[i]); 
     }
     free(g->c);
     free(g->matrix);
-    free(g);
 }
 
 void qPop(queue *q){
 
     qnode *auxNode = q->top;
-    int aux = q->top->v;
     q->top = q->top->next;
     free(auxNode);
 

@@ -61,7 +61,7 @@ int bfsMatrix(graph *g, int v) {
     queue *q = NULL;
     int *visited = (int *) calloc(g->nv,sizeof(int));
     //int *added = (int *) calloc(g->nv,sizeof(int));
-    int top=0,maxSteps=0;
+    int maxSteps=0;
     
     qAdd(q,v);
     while (q->top != NULL){
@@ -79,7 +79,7 @@ int bfsMatrix(graph *g, int v) {
     }
     //free(added);
     free(visited);
-    queueErase(q);
+    qFree(q);
     return maxSteps;
 }
 
