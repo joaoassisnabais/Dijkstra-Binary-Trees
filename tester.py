@@ -34,7 +34,7 @@ def solveFor(working_dir, my_program, probs_dir, maps_dir, results_dir, main_dir
 
             print(cs("Problem: ", "orchid")+ pb, "\n" + cs("Map: ", "orchid") + mapa)
             cmd = "./"+my_program 
-            args = mode+ " " + working_dir +"/"+probs_dir+"/"+pb + " " + working_dir +"/"+maps_dir+"/"+mapa
+            args = mode+ " " + working_dir +probs_dir+"/"+pb + " " + working_dir +maps_dir+"/"+mapa
             print(cs("Arguments:","orchid"), args)
 
             os.system((cmd + " "+ args))
