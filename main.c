@@ -54,8 +54,9 @@ int main (int argc, char *argv[]){
     while(fscanf(fpMaps,"%d %d", &g->nv, &g->na) != EOF) {
         /*Create graph with map data*/
         createGraph(&fpMaps, g);
-        /*Select and call problem funtion*/
+        /*Select and call problem funtion & free memory used*/
         selectProblems(problems, fpOut, g);
+        freeGraph(g);
         /*Run only once depending on the option chosen*/
         if ((strcmp(opt, "-1oo") == 0) || (strcmp(opt, "-1ao") == 0)) break;
     }

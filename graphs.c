@@ -43,3 +43,57 @@ void createGraph(FILE** fp, graph* g){
     }
     return;
 }
+
+void freeGraph(graph* g) {
+
+    free(g->matrix);
+    
+}
+
+void qPop(queue *q){
+
+qnode *auxNode = q->top;
+int aux = q->top->v;
+q->top = q->top->next;
+free(auxNode);
+
+}
+
+queue * qAdd(queue *q, int v){
+
+    if(q == NULL){
+        q = (queue *) malloc(sizeof(queue));
+        q->top = (qnode *) malloc(sizeof(qnode));
+        q->top->v = v;
+        q->top->next = NULL;
+        q->bottom = q->top;
+    }else{
+        q->bottom->next = (qnode *) malloc(sizeof(qnode));
+        q->bottom = q->bottom->next;
+        q->bottom->v = v;
+        q->bottom->next = NULL;
+    }
+    return q;
+}
+
+void qFree(queue *q){
+
+    qnode *aux=q->top;
+
+    while(q->top!=NULL){
+        q->top=aux->next;
+        free(aux);
+        aux = q->top;
+    }
+    free(q);
+}
+
+void qPrint(queue *q){
+
+    qnode *aux = q->top;
+
+    while (aux!=NULL) {
+        printf("%d\n", aux->v);
+        aux = aux->next;
+    }
+}  
