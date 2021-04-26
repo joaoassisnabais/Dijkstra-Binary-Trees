@@ -47,8 +47,8 @@ int C0 (graph *g, int v1, int k){
 
     int sol=0,steps=0;
 
-    if((v1<=g->nv) && (v1>0)){
-        steps=bfsMatrix(g,ACS(v1));
+    if((v1<=g->nv) && (v1>0)){  //verificação da existência do vértice
+        steps=bfsMatrix(g,ACS(v1), k);
         if(k <= steps && k >= 0) sol=1;
         else sol=0;
     }else sol=-1;
@@ -56,7 +56,7 @@ int C0 (graph *g, int v1, int k){
     return sol;
 }
 
-int bfsMatrix(graph *g, int v) {
+int bfsMatrix(graph *g, int v, int k) {
     
     queue *q = NULL;
     int *visited = (int *) calloc(g->nv,sizeof(int));
@@ -65,10 +65,13 @@ int bfsMatrix(graph *g, int v) {
     
     q = qAdd(q,v);
     while (q->top != NULL){
-        if (visited[q->top->v] == 0){
+        if (visited[q->top->v] == 0){//verificação de vértice visitado
             visited[q->top->v] = 1;
-            if(q->top->steps > maxSteps) 
+            if(q->top->steps > maxSteps){//ADICIONAR VERIFICAÇÃO COM K
                 maxSteps = q->top->steps;
+                if(maxSteps == k)
+                    break;
+            }
             for (int i=0; i<g->nv; i++){
                 if ((g->matrix[AccessM(q->top->v,i,g)] != 0) && (visited[i]==0)){
                         q = qAdd(q,i);
