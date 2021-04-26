@@ -91,8 +91,8 @@ void selectProblems(probs* headProbs, FILE* fpout, graph* g) {
             solInt = C0(g,auxProbs->vertice,auxProbs->verticeOrK);
             fprintf(fpout, "%d %d %s %d %d %d\n\n", g->nv, g->na, auxProbs->problema, auxProbs->vertice, auxProbs->verticeOrK,solInt);
         } else if (strcmp(auxProbs->problema, "D0")==0){
-            //solInt = D0();
-            //fprintf(fpout, "%d %d %s %d %d %d\n\n", g->nv, g->na, auxProbs->problema, auxProbs->vertice, auxProbs->verticeOrK,solInt);
+            solInt = D0(g,auxProbs->vertice,auxProbs->verticeOrK);
+            fprintf(fpout, "%d %d %s %d %d %d\n\n", g->nv, g->na, auxProbs->problema, auxProbs->vertice, auxProbs->verticeOrK,solInt);
         } else exit(3);
 
         auxProbs = auxProbs->next;
