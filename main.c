@@ -53,10 +53,12 @@ int main (int argc, char *argv[]){
     /*Cicle to go through all maps*/
     while(fscanf(fpMaps,"%d %d", &g->nv, &g->na) != EOF) {
         /*Create graph with map data*/
-        createGraph(&fpMaps, g);
+        CreateGraphBT(&fpMaps, g);
         /*Select and call problem funtion & free memory used*/
         selectProblems(problems, fpOut, g);
-        freeGraph(g);
+        //freeGraph(g);
+        CleanMem(g,g->nv);
+
         /*Run only once depending on the option chosen*/
         if ((strcmp(opt, "-1oo") == 0) || (strcmp(opt, "-1ao") == 0)) break;
     }

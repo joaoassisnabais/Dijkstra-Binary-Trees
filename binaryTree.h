@@ -41,7 +41,7 @@ void CleanMem(trunk * table, int n_vertex);
 node *CreateLeaf(int name, double cost);
 void CutTree(node * tree);
 void InitVertex(trunk *table);
-void SeeEveryBranch(node * tree, int array[], int *i);
+void SeeTree(node * tree, int array[], int *i);
 node *GetRoot(trunk * table, int key);
 int GetLinks(trunk * table, int key);
 int GetName(node * branch);

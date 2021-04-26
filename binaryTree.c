@@ -16,7 +16,7 @@
 #include "problems.h"
 #include "binaryTree.h"
 
-void CutTree(node * tree){
+void CutTree(node *tree){
     if(tree != NULL){
         if(tree->left != NULL)
             CutTree(tree->left);
@@ -27,19 +27,24 @@ void CutTree(node * tree){
 }
 
 int Height(node *n) {
+    
     if (n == NULL){
         return 0;
     }
     return n->height;
 }
 
-int Max(int a, int b)  { return (a > b)? a : b;  }
+int Max(int a, int b){
+    if(a>b) return a;
+    else return b;
+}
 
 void CutTrunk(trunk *table){
+    free(table->id);
     free(table);
 }
 
-node * GetRoot(trunk * table, int key){
+node* GetRoot(trunk * table, int key){
     return table[ACS(key)].root;
 }
 
@@ -58,8 +63,10 @@ void InitTree(trunk * table, int n_vertex){
     }
 }
 
-node * CreateLeaf(int name, double cost) {
-    node * new = (node *) malloc(sizeof(node));
+node* CreateLeaf(int name, double cost) {
+    
+    node* new = (node *) malloc(sizeof(node));
+    
     if (new == NULL) {
         exit(0);
     }
@@ -72,14 +79,16 @@ node * CreateLeaf(int name, double cost) {
 }
 
 int Balance (node * root) {
-    if(root == NULL)
-        return 0;
+    
+    if(root == NULL) return 0;
     
     return Height(root->left)-Height(root->right);
 }
 
-trunk * CreateTrunk(int n_vertex){
+trunk* CreateTrunk(int n_vertex){
+    
     trunk *table = (trunk *) malloc(sizeof(trunk)*n_vertex);
+    
     if (table == NULL) {
         exit(0);
     }
@@ -87,15 +96,16 @@ trunk * CreateTrunk(int n_vertex){
     return table;
 }
 
-node * LeftOf(node * t){
+node* LeftOf(node * t){
     return t->left;
 }
 
-node * RightOf(node * t){
+node* RightOf(node * t){
     return t->right;
 }
 
-node * RotateRight(node * y){
+node* RotateRight(node * y){
+    
     node * x = y->left;
     node * z = x->right;
     
@@ -108,9 +118,10 @@ node * RotateRight(node * y){
     return x;
 }
 
-node * RotateLeft(node * x){
-    node * y = x->right;
-    node * z = y->left;
+node* RotateLeft(node * x){
+    
+    node* y = x->right;
+    node* z = y->left;
     
     y->left = x;
     x->right = z;
@@ -121,7 +132,7 @@ node * RotateLeft(node * x){
     return y;
 }
 
-node * AVLInsert(node *root, int name, double cost){
+node* AVLInsert(node *root, int name, double cost){
   
     if (root == NULL) { return(CreateLeaf(name, cost)); }
 
@@ -149,46 +160,39 @@ node * AVLInsert(node *root, int name, double cost){
     return root;
 }
 
-//Vê-se numa árvore existe uma ligação a um node "name" name = id do node
-node * FindNode(node *tree, int name){
-    if((tree)==NULL){
-        return NULL;
-    }
-    
-    if(name == (tree)->name){
-        return (tree);
-    } else if(name < (tree)->name){
-        return FindNode((tree)->left, name);
-    } else if (name > (tree)->name){
-        return FindNode((tree)->right, name);
-    } else {
-        return NULL;
-    }
-}
 
 //Recebe um array x posições onde x = n_links de uma árvore
 //guarda em cada posição do array um dos nodes
-void SeeEveryBranch(node * tree, int array[], int *i){
-    if(!tree){
-        return;
-    }
-    array[(*i)] = tree->name;
-    (*i)++;
-    if (!(tree->left) && !(tree->right) ) { //Dead Ends
-        return;
-    }
+void SeeTree(node* tree, int array[], int *i){
     
-    if (tree->left) {
-        SeeEveryBranch(tree->left, array, i);
-    }
-    if (tree->right) {
-        SeeEveryBranch(tree->right, array, i);
-    }
+    if(tree==NULL) return;
+    array[*i] = tree->name;
+    (*i)++;
+    if ((tree->left==NULL) && (tree->right==NULL) ) return; //Dead End
+    if (tree->left) SeeTree(tree->left, array, i);
+    if (tree->right) SeeTree(tree->right, array, i);
 }
 
-void CleanMem(trunk * table, int n_vertex){
-    for (int i = 0; i < n_vertex; i++) {
+//Vê se existe uma ligação a um node 'v' numa árvore
+node* FindNode(node *tree, int v){
+    
+    if((tree)==NULL)
+        return NULL;
+    
+    if(v == (tree)->name)
+        return (tree);
+    else if(v < (tree)->name)
+        return FindNode((tree)->left, v);
+    else if (v > (tree)->name)
+        return FindNode((tree)->right, v);
+    else
+        return NULL;
+}
+
+void CleanMem(trunk *table, int n_vertex){
+    
+    for (int i = 0; i < n_vertex; i++)
         CutTree(table[i].root);
-    }
+
     CutTrunk(table);
 }

@@ -72,6 +72,7 @@ void CreateGraphBT(FILE **fp, data *g){
         g->table[ACS(nVer)].id = (char*) malloc(len);
         strcpy(g->table[ACS(nVer)].id, str);
         g->table[ACS(nVer)].id[len-1]= '\0';
+        g->table[ACS(i)].n_links=0;
     }
     
     //colocar os custos na matriz de adjacência
@@ -79,11 +80,10 @@ void CreateGraphBT(FILE **fp, data *g){
         if(fscanf(*fp,"%d", &va) == 0) exit(0);
         if(fscanf(*fp,"%d", &vb) == 0) exit(0);
         if(fscanf(*fp,"%lf", &cost) == 0) exit(0);
-        aux = AVLInsert(g->table[va].root, vb, cost);
+        aux = AVLInsert(g->table[ACS(va)].root, vb, cost);
+        g->table[ACS(va)].n_links++;
     }
     return;
-
-
 }
 
 

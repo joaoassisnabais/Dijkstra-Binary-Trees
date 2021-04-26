@@ -79,8 +79,8 @@ if __name__ == "__main__":
         removeQueries(working_dir+maps_dir)
         os.chdir(main_dir)
         print(cs("Solving probs for files in: ", "orchid")+ working_dir)
-        #solveFor(working_dir, my_program, probs_dir, maps_dir, results_dir, main_dir)
-        solveValgrind(working_dir, my_program, probs_dir, maps_dir, results_dir, main_dir)
+        solveFor(working_dir, my_program, probs_dir, maps_dir, results_dir, main_dir)
+        #solveValgrind(working_dir, my_program, probs_dir, maps_dir, results_dir, main_dir)
         removeQueries(working_dir+maps_dir)
 
     os.chdir(main_dir)

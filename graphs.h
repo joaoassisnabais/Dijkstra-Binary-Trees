@@ -33,6 +33,7 @@ struct _Queue {
 
 void createGraphM(FILE** fp, graph* g);
 void freeGraphM(graph* g);
+void CreateGraphBT(FILE **fp, data *g);
 queue * qAdd(queue *q, int i);
 void qPop(queue * q);
 int qExist(queue * q);

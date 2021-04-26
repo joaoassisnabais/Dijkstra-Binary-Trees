@@ -82,7 +82,7 @@ void openMapandOut(char* mapFile, FILE** fpMaps, FILE** fpout) {
     return;
 }
 
-void selectProblems(probs* headProbs, FILE* fpout, graph* g) {
+void selectProblems(probs* headProbs, FILE* fpout, data* g) {
 
     int solInt = 0;
     double solDbl = 0;
