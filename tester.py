@@ -3,8 +3,8 @@ from stringcolor import *
 from subprocess import call
 
 def make():
-    os.system("rm aedmaps")
-    os.system("make")
+    call(['rm', 'aedmaps'])
+    call('make')
     return
 
 def getFilenamesInDir(directory):
@@ -23,25 +23,44 @@ def removeQueries(mapsdir):
     os.system("rm *.queries")
     return
 
-def solveFor(working_dir, my_program, probs_dir, maps_dir, results_dir, main_dir):
-    pbs = getFilenamesInDir((working_dir+probs_dir))
-    maps = getFilenamesInDir((working_dir+maps_dir))
-    result_dir = working_dir + results_dir
-    mode = "-" + working_dir[-3:]
+def solveFor(work_dir, my_prog, probs_dir, maps_dir, res_dir, main_dir):
+    pbs = getFilenamesInDir((work_dir+probs_dir))
+    maps = getFilenamesInDir((work_dir+maps_dir))
+    mode = "-" + work_dir[-3:]
     
     for pb in pbs:
         for mapa in maps:
-
             print(cs("Problem: ", "orchid")+ pb, "\n" + cs("Map: ", "orchid") + mapa)
-            cmd = "./"+my_program 
-            args = mode+ " " + working_dir +probs_dir+"/"+pb + " " + working_dir +maps_dir+"/"+mapa
+            program = f'./{my_prog}' 
+            args = f'{mode} {work_dir+probs_dir}/{pb} {work_dir+maps_dir}/{mapa}'
             print(cs("Arguments:","orchid"), args)
 
-            os.system((cmd + " "+ args))
+            cmd = f'{program} {args}'
+            call(cmd , shell=True)
             tmp_res = mapa[:-4] + 'queries'
-            diff_command = "sdiff " + working_dir + maps_dir +"/"+tmp_res + " " + result_dir+ "/" +tmp_res+ ' | egrep -n "\||>|<"'
-            print(cs("Diff Command: ", "orchid") + diff_command)
-            os.system(diff_command)
+            diff_command = f'sdiff {work_dir+maps_dir}/{tmp_res} {work_dir+res_dir}/{tmp_res} | egrep -n "\||>|<"'
+            
+            print(cs("Diff Command: ", "aqua") + diff_command)
+            call(diff_command, shell=True)
+            print("\n")
+            
+    return
+
+def solveValgrind (work_dir, my_prog, probs_dir, maps_dir, res_dir, main_dir):
+    pbs = getFilenamesInDir((work_dir+probs_dir))
+    maps = getFilenamesInDir((work_dir+maps_dir))
+    mode = "-" + work_dir[-3:]
+    
+    for pb in pbs:
+        for mapa in maps:
+            print(cs("Problem: ", "orchid")+ pb, "\n" + cs("Map: ", "orchid") + mapa)
+            program = f'./{my_prog}' 
+            args = f'{mode} {work_dir+probs_dir}/{pb} {work_dir+maps_dir}/{mapa}'
+            print(cs("Arguments:","orchid"), args)
+
+            cmd = f'valgrind --leak-check=full {program} {args}'
+            print(cs("Valgrind log:","aqua"))
+            call(cmd , shell=True)
             print("\n")
             
     return
@@ -60,9 +79,10 @@ if __name__ == "__main__":
         removeQueries(working_dir+maps_dir)
         os.chdir(main_dir)
         print(cs("Solving probs for files in: ", "orchid")+ working_dir)
-        solveFor(working_dir, my_program, probs_dir, maps_dir, results_dir, main_dir)
+        #solveFor(working_dir, my_program, probs_dir, maps_dir, results_dir, main_dir)
+        solveValgrind(working_dir, my_program, probs_dir, maps_dir, results_dir, main_dir)
         removeQueries(working_dir+maps_dir)
 
     os.chdir(main_dir)
-    os.system("make clean")
-    os.system("rm aedmaps")
+    call(['make', 'clean'])
+    call(['rm', 'aedmaps'])

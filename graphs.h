@@ -31,8 +31,8 @@ struct _Queue {
     qnode * bottom;
 };
 
-void createGraph(FILE** fp, graph* g);
-void freeGraph(graph* g);
+void createGraphM(FILE** fp, graph* g);
+void freeGraphM(graph* g);
 queue * qAdd(queue *q, int i);
 void qPop(queue * q);
 int qExist(queue * q);

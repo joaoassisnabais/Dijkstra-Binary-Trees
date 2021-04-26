@@ -20,6 +20,7 @@ struct lista_problemas {
 
 
 probs* extractProbs (char* opt, FILE* fp);
+void probFree(probs *p);
 void openMapandOut(char* mapFile, FILE** fpMaps, FILE** fpout);
 void selectProblems(probs* headProbs, FILE* fpout, graph* g);
 #endif

@@ -14,6 +14,7 @@
 #include "graphs.h"
 #include "matrix.h"
 #include "problems.h"
+#include "binaryTree.h"
 
 void printMatrix(graph* g) {
     for(int i = 0; i < g->nv; i++) {

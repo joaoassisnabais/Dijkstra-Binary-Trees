@@ -13,6 +13,7 @@
 #include "graphs.h"
 #include "matrix.h"
 #include "problems.h"
+#include "binaryTree.h"
 
 int A0 (graph *g, int vertex){
 
@@ -77,7 +78,6 @@ bfsOut* bfsMatrix(graph *g, int v, int k) {
     
     queue *q = NULL;
     int *visited = (int *) calloc(g->nv,sizeof(int));
-    //int *added = (int *) calloc(g->nv,sizeof(int));
     bfsOut* output = (bfsOut*) malloc(sizeof(bfsOut));
     output->maxSteps = 0;
     output->verticesAtK = 0;
@@ -102,7 +102,6 @@ bfsOut* bfsMatrix(graph *g, int v, int k) {
         }
         qPop(q);
     }
-    //free(added);
     free(visited);
     qFree(q);
     return output;

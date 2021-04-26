@@ -14,15 +14,17 @@
 #include "graphs.h"
 #include "matrix.h"
 #include "problems.h"
+#include "binaryTree.h"
 
 int main (int argc, char *argv[]){
 
     FILE *fpProbs, *fpMaps = NULL, *fpOut = NULL;
-    char *opt, *probFile, *userInput = NULL;
-    int UIsz=0;
-    graph *g;
-    g = (graph*) malloc(sizeof(graph));
+    char *opt, *probFile;
+    //graph *g;
+    data *g;
     probs* problems;
+    
+    g = (data*) malloc(sizeof(data));
 
     /*Number of cmd line arguments verification*/
     if(argc != 4){
@@ -41,19 +43,12 @@ int main (int argc, char *argv[]){
         exit(2);
     }
     
-    /*User input into string*/
-    for (int i=1; i<argc; i++) UIsz=sizeof(char)*strlen(argv[i]) + UIsz + 1;
-    userInput= (char*) malloc(UIsz);
-    for (int i=1; i<argc; i++){
-        strcat(userInput,argv[i]);
-        strcat(userInput, " ");
-    }
-    
     /*Store problems file's data*/
     problems = extractProbs(opt, fpProbs);
+    fclose(fpProbs);
     /*Open map and outputs file*/
     openMapandOut(argv[3], &fpMaps, &fpOut);
-    fprintf(fpOut, "%s\n\n", userInput);
+    fprintf(fpOut, "%s %s %s\n\n", argv[1], argv[2], argv[3]);
     
     /*Cicle to go through all maps*/
     while(fscanf(fpMaps,"%d %d", &g->nv, &g->na) != EOF) {
@@ -67,10 +62,9 @@ int main (int argc, char *argv[]){
     }
 
     /*Close map, problems and output files*/
+    probFree(problems);
     free(g);
-    free(userInput);
     fclose(fpMaps);
-    fclose(fpProbs);
     fclose(fpOut);
     return 0;
 }

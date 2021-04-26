@@ -14,6 +14,7 @@
 #include "graphs.h"
 #include "matrix.h"
 #include "problems.h"
+#include "binaryTree.h"
 
 #define MAPS 4
 
@@ -44,6 +45,17 @@ probs * extractProbs (char* opt, FILE* fp) {
     if(i == 0) exit(4);
 
     return output;
+}
+
+void probFree(probs *p){
+
+    probs *aux;
+
+    while(p!=NULL){
+        aux=p->next;
+        free(p);
+        p = aux;
+    }
 }
 
 void openMapandOut(char* mapFile, FILE** fpMaps, FILE** fpout) {
