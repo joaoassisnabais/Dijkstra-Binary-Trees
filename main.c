@@ -57,7 +57,7 @@ int main (int argc, char *argv[]){
         /*Select and call problem funtion & free memory used*/
         selectProblems(problems, fpOut, g);
         //freeGraph(g);
-        CleanMem(g,g->nv);
+        CleanMem(g->table,g->nv);
 
         /*Run only once depending on the option chosen*/
         if ((strcmp(opt, "-1oo") == 0) || (strcmp(opt, "-1ao") == 0)) break;

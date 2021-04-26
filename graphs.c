@@ -59,7 +59,6 @@ void CreateGraphBT(FILE **fp, data *g){
     char str[30];
     int i = 0, nVer = 0, va, vb, len;       //nVer: nº do vértice
     double cost;
-    node *aux;
 
     //Initializing table of trunks
     g->table= (trunk *) calloc(g->nv,sizeof(trunk));
@@ -80,7 +79,7 @@ void CreateGraphBT(FILE **fp, data *g){
         if(fscanf(*fp,"%d", &va) == 0) exit(0);
         if(fscanf(*fp,"%d", &vb) == 0) exit(0);
         if(fscanf(*fp,"%lf", &cost) == 0) exit(0);
-        aux = AVLInsert(g->table[ACS(va)].root, vb, cost);
+        g->table[ACS(va)].root = AVLInsert(g->table[ACS(va)].root, vb, cost);
         g->table[ACS(va)].n_links++;
     }
     return;

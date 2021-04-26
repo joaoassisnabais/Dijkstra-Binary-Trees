@@ -10,6 +10,7 @@
 #define PROBLEMS_H
 
 typedef struct _bfsmatrix bfsOut;
+#include "binaryTree.h"
 struct _bfsmatrix  {
     int maxSteps;
     int verticesAtK;

@@ -5,8 +5,8 @@
  *   binaryTree.h
  *
  ******************************************************************************/
-#ifndef Binary_Tree_h
-#define Binary_Tree_h
+#ifndef BINARY_TREE_H
+#define BINARY_TREE_H
 
 #define DUPLICATED_NODE -2
 #define NO_MEMORY -1

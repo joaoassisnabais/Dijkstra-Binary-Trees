@@ -12,6 +12,7 @@
 typedef struct _Graph graph;
 typedef struct _QueueNode qnode;
 typedef struct _Queue queue;
+#include "binaryTree.h"
 struct _Graph
 {
     double *matrix;     //matriz reduzida que na verdade é um vetor
