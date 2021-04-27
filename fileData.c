@@ -68,15 +68,15 @@ void openMapandOut(char* mapFile, FILE** fpMaps, FILE** fpout) {
     strcat(fileout, extout);
 
     *fpMaps = fopen(mapFile, "r");
-    if(fpMaps == NULL) {
+    if(*fpMaps == NULL) {
         printf("ERROR cannot read map file %s\n", mapFile);
-        return;
+        exit(0);
     }
 
     *fpout = fopen(fileout, "w");
-    if(fpout == NULL) {
+    if(*fpout == NULL) {
         printf("ERROR cannot open exit file %s\n", fileout);
-        return;
+        exit(0);
     }
     free(fileout);
     return;
