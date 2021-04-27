@@ -133,10 +133,12 @@ bfsOut* bfsBT (data *g, int v, int k){
             if(q->top->steps == k-1) 
                 output->verticesAtK++;
 
-            qNext=(int *)malloc(sizeof(int)*g->table[q->top->v].n_links);
+            qNext=(int *)calloc(g->table[q->top->v].n_links,sizeof(int));
             SeeTree(g->table[q->top->v].root, qNext, &auxIndex);
-            for(int i=0; i<g->table[q->top->v].n_links; i++)
-                qAdd(q,qNext[i]);
+            for(int i=0; i<g->table[q->top->v].n_links; i++){
+                if(visited[ACS(qNext[i])]==0) 
+                    qAdd(q,ACS(qNext[i]));
+            }
             free(qNext);
             auxIndex=0;
 
