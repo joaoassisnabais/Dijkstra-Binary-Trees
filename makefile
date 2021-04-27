@@ -6,7 +6,7 @@ CC	 = gcc
 FLAGS	 = -g3 -c -Wall
 LFLAGS	 = 
 
-all: $(OBJS)
+aedmaps: $(OBJS)
 	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)
 
 main.o: main.c
