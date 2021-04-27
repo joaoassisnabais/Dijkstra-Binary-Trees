@@ -21,7 +21,7 @@ struct _node{
 };
 
 struct _trunk{
-    int n_links;
+    int nLinks;
     char *id;
     node *root;
 };

@@ -14,6 +14,7 @@
 #include "graphs.h"
 #include "matrix.h"
 #include "problems.h"
+#include "binaryTree.h"
 
 #define MAPS 4
 
@@ -70,7 +71,7 @@ void openMapandOut(char* mapFile, FILE** fpMaps, FILE** fpout) {
     return;
 }
 
-void selectProblems(probs* headProbs, FILE* fpout, graph* g) {
+void selectProblems(probs* headProbs, FILE* fpout, data* g) {
 
     int solInt = 0;
     double solDbl = 0;
@@ -81,7 +82,7 @@ void selectProblems(probs* headProbs, FILE* fpout, graph* g) {
         if (strcmp(auxProbs->problema, "A0")==0) {
             solInt = A0(g,auxProbs->vertice);      //saída é um inteiro
             fprintf(fpout, "%d %d %s %d %d\n\n", g->nv, g->na, auxProbs->problema, auxProbs->vertice, solInt);
-        } else if (strcmp(auxProbs->problema, "B0")==0) {;
+        }/* else if (strcmp(auxProbs->problema, "B0")==0) {;
             solDbl = B0(g, auxProbs->vertice, auxProbs->verticeOrK);  //saída é um double c/ 2 casas decimais
             if(solDbl == -1)
                 fprintf(fpout, "%d %d %s %d %d -1\n\n", g->nv, g->na, auxProbs->problema, auxProbs->vertice, auxProbs->verticeOrK);
@@ -93,7 +94,7 @@ void selectProblems(probs* headProbs, FILE* fpout, graph* g) {
         } else if (strcmp(auxProbs->problema, "D0")==0){
             solInt = D0(g,auxProbs->vertice,auxProbs->verticeOrK);
             fprintf(fpout, "%d %d %s %d %d %d\n\n", g->nv, g->na, auxProbs->problema, auxProbs->vertice, auxProbs->verticeOrK,solInt);
-        } else exit(3);
+        } */else exit(3);
 
         auxProbs = auxProbs->next;
     }

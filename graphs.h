@@ -8,6 +8,7 @@
 
 #ifndef GRAPHS_H
 #define GRAPHS_H
+#include "binaryTree.h"
 
 typedef struct _Graph graph;
 typedef struct _QueueNode qnode;
@@ -31,7 +32,7 @@ struct _Queue {
     qnode * bottom;
 };
 
-void createGraph(FILE** fp, graph* g);
+void createGraph(FILE** fp, data* g);
 void freeGraph(graph* g);
 queue * qAdd(queue *q, int i);
 void qPop(queue * q);

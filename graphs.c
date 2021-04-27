@@ -14,32 +14,35 @@
 #include "graphs.h"
 #include "matrix.h"
 #include "problems.h"
+#include "binaryTree.h"
 
-void createGraph(FILE** fp, graph* g){
+void createGraph(FILE** fp, data* g){
 
     char str[30];
     int i = 0, nVer = 0, va, vb, len;       //nVer: nº do vértice
     double cost;
 
-    createMandV(g, g->nv);
+    g->table = CreateTrunk(g->nv);
 
     //colocar os valores dos ids na matriz
     for (i=0; i<g->nv; i++){
         if(fscanf(*fp,"%d", &nVer) == 0) exit(0);
         if(fscanf(*fp, "%s", str) == 0) exit(0);
         len = strlen(str) + 1;
-        g->c[ACS(nVer)] = (char*) malloc(len);
-        strcpy(g->c[ACS(nVer)], str);           //fazer define -1
-        g->c[ACS(nVer)][len-1] = '\0';
+        g->table[ACS(nVer)].id = (char*) malloc(len);
+        strcpy(g->table[ACS(nVer)].id, str);           //fazer define -1 ? 
+        g->table[ACS(nVer)].id[len-1] = '\0';
     }
-    IniMatrix(g->matrix, g->nv);
     
     //colocar os custos na matriz de adjacência
     for(i=0; i<g->na; i++){
         if(fscanf(*fp,"%d", &va) == 0) exit(0);
         if(fscanf(*fp,"%d", &vb) == 0) exit(0);
         if(fscanf(*fp,"%lf", &cost) == 0) exit(0);
-        g->matrix[AccessM(ACS(va),ACS(vb), g)] = cost;
+        g->table[ACS(va)].root = AVLInsert(g->table[ACS(va)].root, vb, cost);   //Insert edge into tree
+        g->table[ACS(va)].nLinks++;                                             //Increment number of links of the one vertex
+        g->table[ACS(vb)].root = AVLInsert(g->table[ACS(vb)].root, va, cost);
+        g->table[ACS(vb)].nLinks++;
     }
     return;
 }

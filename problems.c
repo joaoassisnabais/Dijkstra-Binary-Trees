@@ -13,24 +13,15 @@
 #include "graphs.h"
 #include "matrix.h"
 #include "problems.h"
+#include "binaryTree.h"
 
-int A0 (graph *g, int vertex){
+int A0 (data *g, int vertex){
 
-    int degree=0;
-
-    if((vertex <= g->nv) && (vertex > 0)){
-        for (int i = 0; i < g->nv; i++){
-            if(i != ACS(vertex)){
-                if (g->matrix[AccessM(ACS(vertex), i, g)] != 0)
-                    degree++;
-            }
-        }
-    }
+    if((vertex <= g->nv) && (vertex > 0))
+        return g->table[ACS(vertex)].nLinks;
     else return -1;
-
-    return degree;
 }
-double B0 (graph *g, int v1, int v2){
+/*double B0 (data *g, int v1, int v2){
 
     double sol=0;
 
@@ -43,7 +34,7 @@ double B0 (graph *g, int v1, int v2){
     return sol;
 }
 
-int C0 (graph *g, int v1, int k){
+int C0 (data *g, int v1, int k){
 
     int sol=0,steps=0;
     bfsOut* outputBfs;
@@ -59,7 +50,7 @@ int C0 (graph *g, int v1, int k){
     return sol;
 }
 
-int D0 (graph *g, int v1, int k){
+int D0 (data *g, int v1, int k){
 
     int sol=0;
     bfsOut* outputBfs;
@@ -106,5 +97,5 @@ bfsOut* bfsMatrix(graph *g, int v, int k) {
     free(visited);
     qFree(q);
     return output;
-}
+}*/
 

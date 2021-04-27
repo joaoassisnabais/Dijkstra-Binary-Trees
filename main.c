@@ -14,14 +14,15 @@
 #include "graphs.h"
 #include "matrix.h"
 #include "problems.h"
+#include "binaryTree.h"
 
 int main (int argc, char *argv[]){
 
     FILE *fpProbs, *fpMaps = NULL, *fpOut = NULL;
     char *opt, *probFile, *userInput = NULL;
     int UIsz=0;
-    graph *g;
-    g = (graph*) malloc(sizeof(graph));
+    data *g;
+    g = (data*) malloc(sizeof(data));
     probs* problems;
 
     /*Number of cmd line arguments verification*/

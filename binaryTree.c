@@ -49,11 +49,12 @@ node* GetRoot(trunk * table, int key){
 }
 
 int GetLinks(trunk * table, int key){
-    return table[ACS(key)].n_links;
+    return table[ACS(key)].nLinks;
 }
 
 void InitVertex(trunk *table) {
-    (*table).n_links = 0;
+    (*table).nLinks = 0;
+    (*table).id = NULL;
     (*table).root = NULL;
 }
 
