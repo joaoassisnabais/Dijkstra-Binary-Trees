@@ -14,9 +14,8 @@
 #include "graphs.h"
 #include "matrix.h"
 #include "problems.h"
-#include "binaryTree.h"
 
-void createGraphM(FILE** fp, graph* g){
+void createGraph(FILE** fp, graph* g){
 
     char str[30];
     int i = 0, nVer = 0, va, vb, len;       //nVer: nº do vértice
@@ -45,7 +44,7 @@ void createGraphM(FILE** fp, graph* g){
     return;
 }
 
-void freeGraphM(graph* g) {
+void freeGraph(graph* g) {
     
     for(int i = 0; i < g->nv; i++) {
         free(g->c[i]); 
@@ -53,40 +52,6 @@ void freeGraphM(graph* g) {
     free(g->c);
     free(g->matrix);
 }
-
-void CreateGraphBT(FILE **fp, data *g){
-
-    char str[30];
-    int i = 0, nVer = 0, va, vb, len;       //nVer: nº do vértice
-    double cost;
-
-    //Initializing table of trunks
-    g->table= (trunk *) calloc(g->nv,sizeof(trunk));
-    
-    //colocar os valores dos ids nos trunks
-    for (i=0; i<g->nv; i++){
-        if(fscanf(*fp,"%d", &nVer) == 0) exit(0);
-        if(fscanf(*fp, "%s", str) == 0) exit(0);
-        len = strlen(str) + 1;
-        g->table[ACS(nVer)].id = (char*) malloc(len);
-        strcpy(g->table[ACS(nVer)].id, str);
-        g->table[ACS(nVer)].id[len-1]= '\0';
-        g->table[ACS(i)].n_links=0;
-    }
-    
-    //colocar os custos tree de cada um
-    for(i=0; i<g->na; i++){
-        if(fscanf(*fp,"%d", &va) == 0) exit(0);
-        if(fscanf(*fp,"%d", &vb) == 0) exit(0);
-        if(fscanf(*fp,"%lf", &cost) == 0) exit(0);
-        g->table[ACS(va)].root = AVLInsert(g->table[ACS(va)].root, vb, cost);
-        g->table[ACS(va)].n_links++;
-        g->table[ACS(vb)].root = AVLInsert(g->table[ACS(vb)].root, va, cost);
-        g->table[ACS(vb)].n_links++;
-    }
-    return;
-}
-
 
 void qPop(queue *q){
 
