@@ -14,7 +14,6 @@
 #include "graphs.h"
 #include "matrix.h"
 #include "problems.h"
-#include "binaryTree.h"
 
 #define MAPS 4
 
@@ -47,17 +46,6 @@ probs * extractProbs (char* opt, FILE* fp) {
     return output;
 }
 
-void probFree(probs *p){
-
-    probs *aux;
-
-    while(p!=NULL){
-        aux=p->next;
-        free(p);
-        p = aux;
-    }
-}
-
 void openMapandOut(char* mapFile, FILE** fpMaps, FILE** fpout) {
 
     char extout[] = "queries";
@@ -68,21 +56,21 @@ void openMapandOut(char* mapFile, FILE** fpMaps, FILE** fpout) {
     strcat(fileout, extout);
 
     *fpMaps = fopen(mapFile, "r");
-    if(*fpMaps == NULL) {
+    if(fpMaps == NULL) {
         printf("ERROR cannot read map file %s\n", mapFile);
-        exit(0);
+        return;
     }
 
     *fpout = fopen(fileout, "w");
-    if(*fpout == NULL) {
+    if(fpout == NULL) {
         printf("ERROR cannot open exit file %s\n", fileout);
-        exit(0);
+        return;
     }
     free(fileout);
     return;
 }
 
-void selectProblems(probs* headProbs, FILE* fpout, data* g) {
+void selectProblems(probs* headProbs, FILE* fpout, graph* g) {
 
     int solInt = 0;
     double solDbl = 0;

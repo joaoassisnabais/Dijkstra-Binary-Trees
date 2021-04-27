@@ -12,7 +12,6 @@
 typedef struct _Graph graph;
 typedef struct _QueueNode qnode;
 typedef struct _Queue queue;
-#include "binaryTree.h"
 struct _Graph
 {
     double *matrix;     //matriz reduzida que na verdade é um vetor
@@ -32,9 +31,8 @@ struct _Queue {
     qnode * bottom;
 };
 
-void createGraphM(FILE** fp, graph* g);
-void freeGraphM(graph* g);
-void CreateGraphBT(FILE **fp, data *g);
+void createGraph(FILE** fp, graph* g);
+void freeGraph(graph* g);
 queue * qAdd(queue *q, int i);
 void qPop(queue * q);
 int qExist(queue * q);

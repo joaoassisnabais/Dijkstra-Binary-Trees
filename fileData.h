@@ -9,7 +9,7 @@
 #ifndef FILE_DATA_H
 #define FILE_DATA_H
 #include "graphs.h"
-#include "binaryTree.h"
+
 typedef struct lista_problemas probs;
 struct lista_problemas {
     char problema[3];
@@ -20,7 +20,6 @@ struct lista_problemas {
 
 
 probs* extractProbs (char* opt, FILE* fp);
-void probFree(probs *p);
 void openMapandOut(char* mapFile, FILE** fpMaps, FILE** fpout);
-void selectProblems(probs* headProbs, FILE* fpout, data* g);
+void selectProblems(probs* headProbs, FILE* fpout, graph* g);
 #endif
