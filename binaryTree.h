@@ -8,9 +8,6 @@
 #ifndef BINARY_TREE_H
 #define BINARY_TREE_H
 
-#define DUPLICATED_NODE -2
-#define NO_MEMORY -1
-
 typedef struct _node node;
 typedef struct _trunk trunk;
 typedef struct _data data;

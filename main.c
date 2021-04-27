@@ -51,6 +51,7 @@ int main (int argc, char *argv[]){
     
     /*Store problems file's data*/
     problems = extractProbs(opt, fpProbs);
+    fclose(fpProbs);
     /*Open map and outputs file*/
     openMapandOut(argv[3], &fpMaps, &fpOut);
     fprintf(fpOut, "%s\n\n", userInput);
@@ -69,8 +70,8 @@ int main (int argc, char *argv[]){
     /*Close map, problems and output files*/
     free(g);
     free(userInput);
+    freeProbs(problems);
     fclose(fpMaps);
-    fclose(fpProbs);
     fclose(fpOut);
     return 0;
 }

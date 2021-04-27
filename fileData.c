@@ -99,3 +99,14 @@ void selectProblems(probs* headProbs, FILE* fpout, graph* g) {
     }
     return;
 }
+
+void freeProbs(probs *p){
+
+    probs *aux = p;
+
+    while(p != NULL){
+        p = aux->next;
+        free(aux);
+        aux = p;
+    }
+}
