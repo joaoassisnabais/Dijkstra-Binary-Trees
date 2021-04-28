@@ -69,6 +69,10 @@ int D0 (data *g, int v1, int k){
     bfsOut* outputBfs;
 
     if((v1<=g->nv) && (v1>0)){  //verificação da existência do vértice
+        if(k == 0)
+            return 1;
+        if(k < 0)
+            return 0;
         outputBfs=bfsTree(g,ACS(v1), k+1);
         sol = outputBfs->verticesAtK;
         free(outputBfs);
@@ -81,7 +85,6 @@ bfsOut* bfsTree(data *g, int v, int k) {
     
     queue *q = NULL;
     int *visited = (int *) calloc(g->nv,sizeof(int));
-    //int *added = (int *) calloc(g->nv,sizeof(int));
     bfsOut* output = (bfsOut*) malloc(sizeof(bfsOut));
     output->maxSteps = 0;
     output->verticesAtK = 0;
@@ -102,7 +105,6 @@ bfsOut* bfsTree(data *g, int v, int k) {
         }
         qPop(q);
     }
-    //free(added);
     free(visited);
     qFree(q);
     return output;
