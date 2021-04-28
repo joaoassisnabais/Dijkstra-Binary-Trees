@@ -19,8 +19,7 @@
 int main (int argc, char *argv[]){
 
     FILE *fpProbs, *fpMaps = NULL, *fpOut = NULL;
-    char *opt, *probFile, *userInput = NULL;
-    int UIsz=0;
+    char *opt, *probFile;
     data *g;
     g = (data*) malloc(sizeof(data));
     probs* problems;
@@ -42,20 +41,12 @@ int main (int argc, char *argv[]){
         exit(2);
     }
     
-    /*User input into string*/
-    for (int i=1; i<argc; i++) UIsz=sizeof(char)*strlen(argv[i]) + UIsz + 1;
-    userInput= (char*) malloc(UIsz);
-    for (int i=1; i<argc; i++){
-        strcat(userInput,argv[i]);
-        strcat(userInput, " ");
-    }
-    
     /*Store problems file's data*/
     problems = extractProbs(opt, fpProbs);
     fclose(fpProbs);
     /*Open map and outputs file*/
     openMapandOut(argv[3], &fpMaps, &fpOut);
-    fprintf(fpOut, "%s\n\n", userInput);
+    fprintf(fpOut, "%s %s %s\n\n", argv[1], argv[2], argv[3]);
     
     /*Cicle to go through all maps*/
     while(fscanf(fpMaps,"%d %d", &g->nv, &g->na) != EOF) {
@@ -63,14 +54,14 @@ int main (int argc, char *argv[]){
         createGraph(&fpMaps, g);
         /*Select and call problem funtion & free memory used*/
         selectProblems(problems, fpOut, g);
-        freeGraph(g);
+        /*Deletes graph's trunks and trees*/
+        CleanMem(g->table, g->nv);
         /*Run only once depending on the option chosen*/
         if ((strcmp(opt, "-1oo") == 0) || (strcmp(opt, "-1ao") == 0)) break;
     }
 
     /*Close map, problems and output files*/
     free(g);
-    free(userInput);
     freeProbs(problems);
     fclose(fpMaps);
     fclose(fpOut);

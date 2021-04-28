@@ -39,5 +39,6 @@ void qPop(queue * q);
 int qExist(queue * q);
 void qFree(queue * q);
 void qPrint(queue * q);
+void qTree(node* tree, queue** q, int* visited);
 
 #endif

@@ -15,39 +15,52 @@
 #include "problems.h"
 #include "binaryTree.h"
 
-int A0 (data *g, int vertex){
+int A0 (data *g, int vertex) {
 
     if((vertex <= g->nv) && (vertex > 0))
         return g->table[ACS(vertex)].nLinks;
     else return -1;
 }
-/*double B0 (data *g, int v1, int v2){
 
-    double sol=0;
+double B0 (data *g, int v1, int v2) {
 
-    if( ((v1<=g->nv) && (v1>0)) && ((v2<=g->nv) && (v2>0)) ){
-        if(v1!=v2)
-            sol=g->matrix[AccessM(ACS(v1),ACS(v2), g)];
-    }
-    if(sol==0) return -1;
+    node* link;
 
-    return sol;
+    if(((v1 <= g->nv) && (v1 > 0)) && ((v2 <= g->nv) && (v2 > 0))) {
+        if(v1==v2)
+            return -1;
+        else if(g->table[ACS(v1)].nLinks < g->table[ACS(v2)].nLinks)    //check which one has the least link, to make the search faster
+            link = FindNode(g->table[ACS(v1)].root, v2);
+        else
+            link = FindNode(g->table[ACS(v2)].root, v1);
+    } else
+        return -1;
+
+    if(link == NULL)
+        return -1;
+    else
+        return link->cost;
 }
 
 int C0 (data *g, int v1, int k){
 
-    int sol=0,steps=0;
+    int steps=0;
     bfsOut* outputBfs;
 
     if((v1<=g->nv) && (v1>0)){  //verificação da existência do vértice
-        outputBfs = bfsMatrix(g,ACS(v1), k);
+        if(k == 0)
+            return 1;
+        if(k < 0)
+            return 0;
+        outputBfs = bfsTree(g,ACS(v1), k);
         steps=outputBfs->maxSteps;
         free(outputBfs);
-        if(k <= steps && k >= 0) sol=1;
-        else sol=0;
-    }else sol=-1;
-
-    return sol;
+        if(k <= steps)
+            return 1;
+        else
+            return 0;
+    }else
+        return -1;
 }
 
 int D0 (data *g, int v1, int k){
@@ -56,7 +69,7 @@ int D0 (data *g, int v1, int k){
     bfsOut* outputBfs;
 
     if((v1<=g->nv) && (v1>0)){  //verificação da existência do vértice
-        outputBfs=bfsMatrix(g,ACS(v1), k+1);
+        outputBfs=bfsTree(g,ACS(v1), k+1);
         sol = outputBfs->verticesAtK;
         free(outputBfs);
     }else sol = -1;
@@ -64,7 +77,7 @@ int D0 (data *g, int v1, int k){
     return sol;
 }
 
-bfsOut* bfsMatrix(graph *g, int v, int k) {
+bfsOut* bfsTree(data *g, int v, int k) {
     
     queue *q = NULL;
     int *visited = (int *) calloc(g->nv,sizeof(int));
@@ -82,14 +95,10 @@ bfsOut* bfsMatrix(graph *g, int v, int k) {
                 if(output->maxSteps == k)
                     break;
             }
-            if(q->top->steps == k-1) 
+            if(q->top->steps == k-1)    //usado para D0, com k+1 de input
                 output->verticesAtK++;
 
-            for (int i=0; i<g->nv; i++){
-                if ((g->matrix[AccessM(q->top->v,i,g)] != 0) && (visited[i]==0)){
-                    q = qAdd(q,i);
-                }
-            }
+            qTree(g->table[q->top->v].root, &q, visited);
         }
         qPop(q);
     }
@@ -97,5 +106,5 @@ bfsOut* bfsMatrix(graph *g, int v, int k) {
     free(visited);
     qFree(q);
     return output;
-}*/
+}
 

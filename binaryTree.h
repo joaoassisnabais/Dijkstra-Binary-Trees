@@ -32,16 +32,19 @@ struct _data{
     int na;
 };
 
-trunk *CreateTrunk(int n_vertex);
-node *FindNode(node *tree, int name);
-void CleanMem(trunk * table, int n_vertex);
-node *CreateLeaf(int name, double cost);
+int Height(node *n);
+int Max(int a, int b);
+int Balance (node * root);
 void CutTree(node * tree);
+void CutTrunk(trunk *table);
+void CleanMem(trunk * table, int n_vertex);
 void InitVertex(trunk *table);
-void SeeTree(node * tree, int array[], int *i);
-node *GetRoot(trunk * table, int key);
-int GetLinks(trunk * table, int key);
-int GetName(node * branch);
+void InitTree(trunk * table, int n_vertex);
+trunk *CreateTrunk(int n_vertex);
+node *CreateLeaf(int name, double cost);
+node* RotateRight(node * y);
+node* RotateLeft(node * x);
+node *FindNode(node *tree, int name);
 node *AVLInsert(node * root, int name, double cost);
 
 #endif /* Binary_Tree_h */

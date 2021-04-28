@@ -16,6 +16,28 @@
 #include "problems.h"
 #include "binaryTree.h"
 
+int Height(node *n) {
+    
+    if (n == NULL){
+        return 0;
+    }
+    return n->height;
+}
+
+int Max(int a, int b){
+    if(a>b)
+        return a;
+    else
+        return b;
+}
+
+int Balance (node * root){
+    
+    if(root == NULL) return 0;
+    
+    return Height(root->left)-Height(root->right);
+}
+
 void CutTree(node *tree){
     if(tree != NULL){
         if(tree->left != NULL)
@@ -26,30 +48,17 @@ void CutTree(node *tree){
     }
 }
 
-int Height(node *n) {
-    
-    if (n == NULL){
-        return 0;
-    }
-    return n->height;
-}
-
-int Max(int a, int b){
-    if(a>b) return a;
-    else return b;
-}
-
 void CutTrunk(trunk *table){
-    free(table->id);
     free(table);
 }
 
-node* GetRoot(trunk * table, int key){
-    return table[ACS(key)].root;
-}
-
-int GetLinks(trunk * table, int key){
-    return table[ACS(key)].nLinks;
+void CleanMem(trunk *table, int n_vertex){
+    
+    for (int i = 0; i < n_vertex; i++){
+        CutTree(table[i].root);
+        free(table[i].id);
+    }
+        CutTrunk(table);
 }
 
 void InitVertex(trunk *table) {
@@ -64,7 +73,18 @@ void InitTree(trunk * table, int n_vertex){
     }
 }
 
-node* CreateLeaf(int name, double cost) {
+trunk* CreateTrunk(int n_vertex){
+    
+    trunk *table = (trunk *) malloc(sizeof(trunk)*n_vertex);
+    
+    if (table == NULL) {
+        exit(0);
+    }
+    InitTree(table, n_vertex);
+    return table;
+}
+
+node* CreateLeaf(int name, double cost){
     
     node* new = (node *) malloc(sizeof(node));
     
@@ -77,32 +97,6 @@ node* CreateLeaf(int name, double cost) {
     new->name = name;
     new->height = 1;
     return new;
-}
-
-int Balance (node * root) {
-    
-    if(root == NULL) return 0;
-    
-    return Height(root->left)-Height(root->right);
-}
-
-trunk* CreateTrunk(int n_vertex){
-    
-    trunk *table = (trunk *) malloc(sizeof(trunk)*n_vertex);
-    
-    if (table == NULL) {
-        exit(0);
-    }
-    InitTree(table, n_vertex);
-    return table;
-}
-
-node* LeftOf(node * t){
-    return t->left;
-}
-
-node* RightOf(node * t){
-    return t->right;
 }
 
 node* RotateRight(node * y){
@@ -133,6 +127,22 @@ node* RotateLeft(node * x){
     return y;
 }
 
+//Vê se existe uma ligação a um node 'v' numa árvore
+node* FindNode(node *tree, int v){
+    
+    if((tree)==NULL)
+        return NULL;
+    
+    if(v == (tree)->name)
+        return (tree);
+    else if(v < (tree)->name)
+        return FindNode((tree)->left, v);
+    else if (v > (tree)->name)
+        return FindNode((tree)->right, v);
+    else
+        return NULL;
+}
+
 node* AVLInsert(node *root, int name, double cost){
   
     if (root == NULL) { return(CreateLeaf(name, cost)); }
@@ -159,41 +169,4 @@ node* AVLInsert(node *root, int name, double cost){
         return RotateLeft(root);
     }
     return root;
-}
-
-
-//Recebe um array x posições onde x = n_links de uma árvore
-//guarda em cada posição do array um dos nodes
-void SeeTree(node* tree, int array[], int *i){
-    
-    if(tree==NULL) return;
-    array[*i] = tree->name;
-    (*i)++;
-    if ((tree->left==NULL) && (tree->right==NULL) ) return; //Dead End
-    if (tree->left) SeeTree(tree->left, array, i);
-    if (tree->right) SeeTree(tree->right, array, i);
-}
-
-//Vê se existe uma ligação a um node 'v' numa árvore
-node* FindNode(node *tree, int v){
-    
-    if((tree)==NULL)
-        return NULL;
-    
-    if(v == (tree)->name)
-        return (tree);
-    else if(v < (tree)->name)
-        return FindNode((tree)->left, v);
-    else if (v > (tree)->name)
-        return FindNode((tree)->right, v);
-    else
-        return NULL;
-}
-
-void CleanMem(trunk *table, int n_vertex){
-    
-    for (int i = 0; i < n_vertex; i++)
-        CutTree(table[i].root);
-
-    CutTrunk(table);
 }

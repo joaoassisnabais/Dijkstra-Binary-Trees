@@ -104,3 +104,19 @@ void qPrint(queue *q){
         aux = aux->next;
     }
 }  
+
+//Recebe uma queue e uma árvore e percorre a árvore 
+//adicionando os nós não visitados à queue
+void qTree(node* tree, queue** q, int* visited){
+    
+    if(tree==NULL)
+        return;
+    if(!visited[ACS(tree->name)])
+        *q = qAdd(*q, ACS(tree->name));
+    if ((tree->left==NULL) && (tree->right==NULL))
+        return; //Dead End
+    if (tree->left)
+        qTree(tree->left, q, visited);
+    if (tree->right)
+        qTree(tree->right, q, visited);
+}
