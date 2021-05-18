@@ -14,8 +14,11 @@
 typedef struct lista_problemas probs;
 struct lista_problemas {
     char problema[3];
-    int vertice;
-    int verticeOrK;     //segundo input: vertice ou distancia (k)
+    int va;
+    int vb;
+    int k;
+    char id;
+    double cost;
     probs* next;
 };
 

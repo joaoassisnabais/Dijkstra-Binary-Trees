@@ -110,3 +110,26 @@ bfsOut* bfsTree(data *g, int v, int k) {
     return output;
 }
 
+void A1(data* g, int va, int vb){
+
+
+    return;
+}
+
+void B1(data* g, int va, int vb, char id, double cost){
+
+
+    return;
+}
+
+void C1(data* g, int va, int vb, int k){
+
+
+    return;
+}
+
+void D1(data* g, int va, int vb, int k){
+
+
+    return;
+}
