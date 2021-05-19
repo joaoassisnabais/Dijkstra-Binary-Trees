@@ -103,7 +103,7 @@ void qPrint(queue *q){
         printf("%d\n", aux->v);
         aux = aux->next;
     }
-}  
+}
 
 //Recebe uma queue e uma árvore e percorre a árvore 
 //adicionando os nós não visitados à queue

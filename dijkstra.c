@@ -18,18 +18,18 @@
 #include "binaryTree.h"
 #include "dijkstra.h"
 
-bool compare(QData * item1, QData * item2){
-    if (item1->cost < item2->cost)
+bool compare(QData item1, QData item2){
+    if (item1.cost < item2.cost)
         return true;
     else
         return false;
 }
 
-void pqPrint(PQueue * q, void printItem(const void *)) {
+/*void pqPrint(PQueue * q, void printItem(const void *)) {
     for (int i = 0; i < q->n_elements ; i++) {
         printItem(q->data[i]);
     }
-}
+}*/
 
 void pqErase(PQueue * q){
     free(q->data);
@@ -41,7 +41,7 @@ PQueue * pqCreate(int size){
     if (q == NULL) { return NULL; }                     //malloc error
     q->n_elements = 0;                                  //number of elements at 0
     q->size = size;
-    q->data = (QData **) malloc(sizeof(QData)*size);    //malloc array of structs of type QData
+    q->data = (QData *) malloc(sizeof(QData)*size);     //malloc array of structs of type QData
     if (q->data == NULL) {                              //malloc error
         free(q);
         return NULL;
@@ -51,7 +51,7 @@ PQueue * pqCreate(int size){
 
 //i = index
 void FixUp(PQueue *q, int index) {
-    QData * t;
+    QData t;
     while ((index > 0) && compare(q->data[(index-1) / 2], q->data[index])) {
         t = q->data[index];
         q->data[index] = q->data[(index - 1) / 2];
@@ -63,7 +63,7 @@ void FixUp(PQueue *q, int index) {
 
 void FixDown(PQueue * q, int index) {
     int j;
-    QData * t;
+    QData t;
     
     while ((2 * index + 1) < q->n_elements) {
         j = 2 * index + 1;
@@ -88,7 +88,7 @@ void FixDown(PQueue * q, int index) {
 
 //i = index
 void SFixUp(PQueue *q, int index) {
-    QData * t;
+    QData t;
     while ((index > 0) && !compare(q->data[(index - 1) / 2], q->data[index])) {
         t = q->data[index];
         
@@ -102,7 +102,7 @@ void SFixUp(PQueue *q, int index) {
 
 void SFixDown(PQueue * q, int k) {
     int j;
-    QData * t;
+    QData t;
     
     while ((2 * k + 1) < q->n_elements) {
         j = 2 * k + 1;
@@ -126,7 +126,7 @@ void SFixDown(PQueue * q, int k) {
 }
 
 void HeapSort(PQueue * q) {
-    QData * aux;
+    QData aux;
     int num_elements = q->n_elements;
     for (int i = q->n_elements-1 ; i > 0 ; i--) {
         aux = q->data[0];
@@ -144,16 +144,18 @@ void HeapSort(PQueue * q) {
 /*
 Function to add a vertex to the PQ
 */
-void pqAdd(PQueue * q, QData * data){
+void pqAdd(PQueue * q, QData data){
     q->data[q->n_elements] = data;
     q->n_elements++;
     FixUp(q, q->n_elements-1);
 }
 
-void pqModify(PQueue * q, int q_index, void * newpriority) {
-    if (compare(newpriority, q->data[q_index])) {
+void pqModify(PQueue * q, int q_index, int newcost) {
+    if (newcost < q->data[q_index].cost) {
+        q->data[q_index].cost = newcost;
         SFixUp(q, q_index);
     } else {
+        q->data[q_index].cost = newcost;
         SFixDown(q, q_index);
     }
     return;
@@ -163,14 +165,39 @@ void pqMinDel(PQueue * q){
     if (q->n_elements > 0) {
         q->data[0] = q->data[q->n_elements - 1];
         
-        q->data[q->n_elements - 1] = 0;
+        //q->data[q->n_elements - 1] = 0;
         q->n_elements--;
         SFixDown(q, 0); //FIXME
     }
 }
 
-void * pqGetFirst(PQueue * q){
-    QData * t = q->data[0];
+QData pqGetFirst(PQueue * q){   //alternativamente: QData *
+    QData t = q->data[0];       //alternativamente: QData *t = &(q->data[0]);
     return t;
 }
 
+int * dijkstra(data * g, int src, int end) {
+
+    int *parentArr, cost;
+    node *auxVertex;
+    PQueue *q = pqCreate(g->nv);
+    QData aux, current;
+    aux.cost = INF;
+
+    for(int v = 0; v < g->nv; v++) {
+        aux.vert = v;
+        pqAdd(q, aux);
+    }
+
+    pqModify(q, src, 0);
+
+    while (q->data != NULL) {
+        current = pqGetFirst(q);
+        cost = FindNode(g->table[ACS(current)].root, );
+        while(aux.vert != src) {
+            pqModify(q, aux.vert, cost);
+        }
+    }
+
+    return parentArr;
+}

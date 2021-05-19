@@ -14,6 +14,7 @@
 #include "matrix.h"
 #include "problems.h"
 #include "binaryTree.h"
+#include "spt.h"
 
 int A0 (data *g, int vertex) {
 
@@ -112,7 +113,7 @@ bfsOut* bfsTree(data *g, int v, int k) {
 
 void A1(data* g, int va, int vb){
 
-
+    dijkstra(g, 3, 1);
     return;
 }
 
