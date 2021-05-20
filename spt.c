@@ -72,10 +72,10 @@ void pqModify(PQueue *q, int index, double newcost){
 void pqAdd(PQueue **qP, int vId, double newcost, int previous, double parentCost, int va, int vb){
     PQueue *q = *qP;
 
-    if(vId == va && vb == -2)
+    /*if(vId == va && vb == -2)
         return;
     if(vId == va && previous == vb)
-        return;
+        return;*/
     if(q->data[vId].visited == true)
         return;
     if(q->data[vId].index != -1) {
@@ -84,7 +84,7 @@ void pqAdd(PQueue **qP, int vId, double newcost, int previous, double parentCost
         pqModify(q, q->data[vId].index, newcost);
     }
     q->qVertex[q->n_elements] = vId;
-    q->data[vId].visited = true;
+    //q->data[vId].visited = true;
     q->data[vId].cost = newcost;
     q->data[vId].index = q->n_elements;
     q->data[vId].previous = previous;
@@ -172,17 +172,24 @@ parentArray* dijkstra(data *g, int src, int end, double* totalCost, int va, int 
 
     pqAdd(&q, ACS(src), 0, ACS(src), 0, va, vb);    //add src à Queue
 
-    printf("\nids do %d: %s\n", src, g->table[ACS(src)].id);
 
-    while(!pqEmpty(q) && current != ACS(end)){
+    while(!pqEmpty(q)){
 
         current = pqPop(q);
-        parent[current].vertex = q->data[current].previous;
-        parent[current].cost = q->data[current].parentCost;
-        printf("vertice %d: Access through: %d Parent cost: %lf Total cost: %lf\n", current+1, parent[current].vertex+1, parent[current].cost, q->data[current].cost);
+
+        /*if(q->data[ACS(end)].visited == 1){
+            *totalCost=q->data[ACS(end)].cost;
+            pqFree(q);
+            return parent;
+        }*/
     
-        if(current != -1)
+        if(current != -1){
             pqTree(g->table[current].root, &q, q->data[current].cost, current, va, vb);
+        }
+
+        parent[current].vertex = q->data[current].previous + 1;
+        parent[current].cost = q->data[current].parentCost;
+        printf("vertice: %d Pai: %d custo: %.2lf\n", current+1, parent[current].vertex, parent[current].cost);
     }
     *totalCost=q->data[ACS(end)].cost;
     pqFree(q);

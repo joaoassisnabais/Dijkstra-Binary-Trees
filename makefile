@@ -15,4 +15,4 @@ binaryTree.o: binaryTree.c binaryTree.h matrix.h
 matrix.o: matrix.c matrix.h
 	gcc -Wall -std=c99 -g -c matrix.c
 clean:
-	rm *.o
+	rm -f *.o a.out aedmaps *~

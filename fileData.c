@@ -55,10 +55,11 @@ probs * extractProbs (char* opt, FILE* fp) {
 
 void openMapandOut(char* mapFile, FILE** fpMaps, FILE** fpout) {
 
-    char extout[] = "queries";
+    char extout[] = "routes";
     char *fileout = NULL;
 
     fileout = (char *) malloc((strlen(mapFile) + strlen(extout) - MAPS + 1));
+    if(fileout == NULL) exit(0);
     if(fileout==NULL) exit(0);
 
     snprintf(fileout, strlen(mapFile)- MAPS + 1, "%s", mapFile);

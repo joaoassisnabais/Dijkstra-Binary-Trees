@@ -111,24 +111,34 @@ bfsOut* bfsTree(data *g, int v, int k) {
     return output;
 }
 
+/*----------------------------------------------------------2nd Submission----------------------------------------------------------------*/
+
 void A1(FILE* fp, data* g, int va, int vb){
 
     parentArray *result;
     double totalCost=-1;
     int steps=0, i;
 
-    if(va < 0 || vb < 0 || va > g->nv || vb > g->nv){
-        fprintf(fp, "%d %d A1 %d %d %.2lf", g->nv, g->na, va, vb, totalCost);
+    if( (va <= 0) || (vb <= 0) || (va > g->nv) || (vb > g->nv) ){
+        fprintf(fp, "%d %d A1 %d %d -1", g->nv, g->na, va, vb);
+        fprintf(fp, "\n\n");
+        return;
+    }
+
+    if(va == vb){
+        fprintf(fp, "%d %d A1 %d %d 0 0.00", g->nv, g->na, va, vb);
+        fprintf(fp, "\n\n");
         return;
     }
 
     result = dijkstra(g, vb, va, &totalCost, -2, -2);
 
-    for(i=va; i!= ACS(vb); i=result[ACS(i)].vertex) steps++;
+    for(i=va; i!= vb; i=result[ACS(i)].vertex) 
+        steps++;
 
     fprintf(fp, "%d %d A1 %d %d %d %.2lf", g->nv, g->na, va, vb, steps, totalCost);
     for(i=va; i!= vb; i=result[ACS(i)].vertex){
-        fprintf(fp, "\n%d %d %.2lf", i, result[ACS(i)].vertex, result[ACS(i)].cost);
+        fprintf(fp , "\n%d %d %.2lf", i, result[ACS(i)].vertex, result[ACS(i)].cost);
     }
     fprintf(fp, "\n\n");
 
@@ -137,10 +147,10 @@ void A1(FILE* fp, data* g, int va, int vb){
 
 void B1(FILE* fp, data* g, int va, int vb, char id, double cost){
 
-    int *totalCost;
+    /*int *totalCost;
     int i;
 
-    /*for(i = 0; i < g->nv; i++) {
+    for(i = 0; i < g->nv; i++) {
         while( g->table[i].id
     }*/
 

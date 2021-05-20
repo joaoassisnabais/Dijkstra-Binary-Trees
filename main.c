@@ -25,10 +25,7 @@ int main (int argc, char *argv[]){
     probs* problems;
 
     /*Number of cmd line arguments verification*/
-    if(argc != 4){
-        printf("Not enough arguments: %d\n", argc);
-        exit(1);
-    }
+    if(argc != 4) exit(0);
     
     /*Extract cmd line arguments (option and problem file)*/
     opt = argv[1];
