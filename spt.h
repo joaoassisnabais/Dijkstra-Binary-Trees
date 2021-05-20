@@ -30,6 +30,6 @@ struct _Parent{
 };
 
 void pqTree(node* tree, PQueue** q, double currentCost, int previous);
-parentArray * dijkstra(data *g, int src, int end);
+parentArray * dijkstra(data *g, int src, int end, double* totalCost);
 
 #endif /* Spt_h */

@@ -82,7 +82,7 @@ void selectProblems(probs* headProbs, FILE* fpout, data* g) {
         
         if (strcmp(auxProbs->problema, "A1")==0) {
 
-            A1(g,auxProbs->va, auxProbs->vb);
+            A1(fpout, g,auxProbs->va, auxProbs->vb);
 
         } else if (strcmp(auxProbs->problema, "B1")==0) {
 

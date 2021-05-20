@@ -143,7 +143,13 @@ void initQData(PQueue *q, int vId) {
     q->qVertex[vId] = -1;
 }
 
-parentArray * dijkstra(data *g, int src, int end) {
+void pqFree(PQueue *q){
+    free(q->data);
+    free(q->qVertex);
+    free(q);
+}
+
+parentArray* dijkstra(data *g, int src, int end, double* totalCost, int va, int vb) {
 
     PQueue *q;
     parentArray *parent; //array de parents
@@ -169,5 +175,7 @@ parentArray * dijkstra(data *g, int src, int end) {
         if(current != -1)
             pqTree (g->table[current].root, &q, q->data[current].cost, current);
     }
+    *totalCost=q->data[ACS(end)].cost; 
+    pqFree(q);
     return parent;
 }
