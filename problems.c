@@ -122,9 +122,9 @@ void A1(FILE* fp, data* g, int va, int vb){
         return;
     }
 
-    result = dijkstra(g, vb, va, &totalCost, -1, -1);
+    result = dijkstra(g, vb, va, &totalCost, -2, -2);
 
-    for(i=va; i!= vb; i=result[ACS(i)].vertex) steps++;
+    for(i=va; i!= ACS(vb); i=result[ACS(i)].vertex) steps++;
 
     fprintf(fp, "%d %d A1 %d %d %d %.2lf", g->nv, g->na, va, vb, steps, totalCost);
     for(i=va; i!= vb; i=result[ACS(i)].vertex){
@@ -138,6 +138,11 @@ void A1(FILE* fp, data* g, int va, int vb){
 void B1(FILE* fp, data* g, int va, int vb, char id, double cost){
 
     int *totalCost;
+    int i;
+
+    /*for(i = 0; i < g->nv; i++) {
+        while( g->table[i].id
+    }*/
 
     return;
 }

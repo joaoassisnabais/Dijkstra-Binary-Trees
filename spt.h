@@ -29,7 +29,6 @@ struct _Parent{
     double cost;
 };
 
-void pqTree(node* tree, PQueue** q, double currentCost, int previous);
 parentArray * dijkstra(data *g, int src, int end, double* totalCost, int va, int vb);
 
 #endif /* Spt_h */

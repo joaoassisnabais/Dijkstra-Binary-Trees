@@ -111,18 +111,18 @@ int pqPop(PQueue *q) {
     return -1;
 }
 
-void pqTree(node* tree, PQueue** q, double currentCost, int previous){
+void pqTree(node* tree, PQueue** q, double currentCost, int previous, int va, int vb){
     
     if(tree==NULL)
         return;
     if(!(*q)->data[ACS(tree->name)].visited)
-        pqAdd(q, ACS(tree->name), tree->cost + currentCost, previous, tree->cost);
+        pqAdd(q, ACS(tree->name), tree->cost + currentCost, previous, tree->cost, va, vb);
     if ((tree->left==NULL) && (tree->right==NULL))
         return; //Dead End
     if (tree->left)
-        pqTree(tree->left, q, currentCost, previous);
+        pqTree(tree->left, q, currentCost, previous, va, vb);
     if (tree->right)
-        pqTree(tree->right, q, currentCost, previous);
+        pqTree(tree->right, q, currentCost, previous, va, vb);
 }
 
 PQueue * pqCreate(int size) {
@@ -170,22 +170,21 @@ parentArray* dijkstra(data *g, int src, int end, double* totalCost, int va, int 
         parent[v].cost = -1;
     }
 
-    pqAdd(&q, ACS(src), 0, ACS(src), 0);    //add src à Queue
+    pqAdd(&q, ACS(src), 0, ACS(src), 0, va, vb);    //add src à Queue
 
-    while(!pqEmpty(q)){
+    printf("\nids do %d: %s\n", src, g->table[ACS(src)].id);
 
-        if(current == ACS(end)){
-            *totalCost=q->data[ACS(end)].cost;
-            pqFree(q);
-            return parent;
-        }
+    while(!pqEmpty(q) && current != ACS(end)){
 
         current = pqPop(q);
         parent[current].vertex = q->data[current].previous;
         parent[current].cost = q->data[current].parentCost;
         printf("vertice %d: Access through: %d Parent cost: %lf Total cost: %lf\n", current+1, parent[current].vertex+1, parent[current].cost, q->data[current].cost);
+    
         if(current != -1)
-            pqTree(g->table[current].root, &q, q->data[current].cost, current);
+            pqTree(g->table[current].root, &q, q->data[current].cost, current, va, vb);
     }
-    return NULL;
+    *totalCost=q->data[ACS(end)].cost;
+    pqFree(q);
+    return parent;
 }
