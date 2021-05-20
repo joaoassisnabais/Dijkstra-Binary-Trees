@@ -69,8 +69,13 @@ void pqModify(PQueue *q, int index, double newcost){
     return;
 }
 
-void pqAdd(PQueue **qP, int vId, double newcost, int previous, double parentCost){
+void pqAdd(PQueue **qP, int vId, double newcost, int previous, double parentCost, int va, int vb){
     PQueue *q = *qP;
+
+    if(vId == va && vb == -2)
+        return;
+    if(vId == va && previous == vb)
+        return;
     if(q->data[vId].visited == true)
         return;
     if(q->data[vId].index != -1) {
@@ -140,6 +145,7 @@ void initQData(PQueue *q, int vId) {
     q->data[vId].cost = DBL_MAX;
     q->data[vId].index = -1;
     q->data[vId].visited = false;
+    q->data[vId].previous = -1;
     q->qVertex[vId] = -1;
 }
 
@@ -166,16 +172,20 @@ parentArray* dijkstra(data *g, int src, int end, double* totalCost, int va, int 
 
     pqAdd(&q, ACS(src), 0, ACS(src), 0);    //add src à Queue
 
-    while(!pqEmpty(q) && current != ACS(end)) {
+    while(!pqEmpty(q)){
+
+        if(current == ACS(end)){
+            *totalCost=q->data[ACS(end)].cost;
+            pqFree(q);
+            return parent;
+        }
 
         current = pqPop(q);
         parent[current].vertex = q->data[current].previous;
         parent[current].cost = q->data[current].parentCost;
         printf("vertice %d: Access through: %d Parent cost: %lf Total cost: %lf\n", current+1, parent[current].vertex+1, parent[current].cost, q->data[current].cost);
         if(current != -1)
-            pqTree (g->table[current].root, &q, q->data[current].cost, current);
+            pqTree(g->table[current].root, &q, q->data[current].cost, current);
     }
-    *totalCost=q->data[ACS(end)].cost; 
-    pqFree(q);
-    return parent;
+    return NULL;
 }

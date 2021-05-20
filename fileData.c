@@ -86,15 +86,15 @@ void selectProblems(probs* headProbs, FILE* fpout, data* g) {
 
         } else if (strcmp(auxProbs->problema, "B1")==0) {
 
-            B1(g, auxProbs->va, auxProbs->vb, auxProbs->id, auxProbs->cost);
+            B1(fpout, g, auxProbs->va, auxProbs->vb, auxProbs->id, auxProbs->cost);
 
         } else if (strcmp(auxProbs->problema, "C1")==0){
 
-            C1(g,auxProbs->va, auxProbs->vb, auxProbs->k);
+            C1(fpout, g, auxProbs->va, auxProbs->vb, auxProbs->k);
 
         } else if (strcmp(auxProbs->problema, "D1")==0){
 
-            D1(g,auxProbs->va, auxProbs->vb, auxProbs->k);
+            D1(fpout, g, auxProbs->va, auxProbs->vb, auxProbs->k);
 
         } else exit(0);
 

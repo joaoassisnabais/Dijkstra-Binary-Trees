@@ -122,7 +122,7 @@ void A1(FILE* fp, data* g, int va, int vb){
         return;
     }
 
-    result = dijkstra(g, vb, va, &totalCost);
+    result = dijkstra(g, vb, va, &totalCost, -1, -1);
 
     for(i=va; i!= vb; i=result[ACS(i)].vertex) steps++;
 
