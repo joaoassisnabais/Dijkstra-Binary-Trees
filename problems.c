@@ -114,12 +114,11 @@ bfsOut* bfsTree(data *g, int v, int k) {
 /*----------------------------------------------------------2nd Submission----------------------------------------------------------------*/
 
 void A1(FILE* fp, data* g, int va, int vb){
-
     parentArray *result;
     double totalCost=-1;
     int steps=0, i;
 
-    if( (va <= 0) || (vb <= 0) || (va > g->nv) || (vb > g->nv) ){
+    if( (va < 1) || (vb < 1) || (va > g->nv) || (vb > g->nv) ){
         fprintf(fp, "%d %d A1 %d %d -1", g->nv, g->na, va, vb);
         fprintf(fp, "\n\n");
         return;
@@ -133,8 +132,7 @@ void A1(FILE* fp, data* g, int va, int vb){
 
     result = dijkstra(g, vb, va, &totalCost, -2, -2);
 
-    for(i=va; i!= vb; i=result[ACS(i)].vertex) 
-        steps++;
+    for(i=va; i!= vb; i=result[ACS(i)].vertex, steps++);
 
     fprintf(fp, "%d %d A1 %d %d %d %.2lf", g->nv, g->na, va, vb, steps, totalCost);
     for(i=va; i!= vb; i=result[ACS(i)].vertex){
@@ -159,11 +157,43 @@ void B1(FILE* fp, data* g, int va, int vb, char id, double cost){
 
 void C1(FILE* fp, data* g, int va, int vb, int k){
     
-    double totalCost=-1;
-    if(va < 0 || vb < 0 || va > g->nv || vb > g->nv){
-        fprintf(fp, "%d %d A1 %d %d %.2lf", g->nv, g->na, va, vb, totalCost);
+
+    parentArray *result;
+    double cost1=-1, cost2=-1, totalCost;
+    int steps=0, notV=-1, i;
+
+    if( (va < 1) || (vb < 1) || (va > g->nv) || (vb > g->nv) ){
+        fprintf(fp, "%d %d C1 %d %d %d -1", g->nv, g->na, va, vb, k);
+        fprintf(fp, "\n\n");
         return;
     }
+
+    if(va == vb){
+        fprintf(fp, "%d %d C1 %d %d %d 0 0.00 -1", g->nv, g->na, va, vb, k);
+        fprintf(fp, "\n\n");
+        return;
+    }
+
+    result = dijkstra(g, vb, va, &cost1, -2, -2);
+
+    for(i=va; i!= vb; i=result[ACS(i)].vertex, steps++) if(steps == k-1) notV = i;
+
+    if(va == notV || vb == notV || notV == -1){
+        printf("%d %d C1 %d %d %d %d %.2lf -1",g->nv, g->na, va, vb, k, steps, cost1);
+        for(i=va; i!= vb; i=result[ACS(i)].vertex)
+            printf("\n%d %d %.2lf", i, g.vertices[i-1].parent, g.vertices[i-1].parentcost);
+
+        printf("\n\n");
+        return;
+    }
+
+    fprintf(fp, "%d %d C1 %d %d %d %.2lf", g->nv, g->na, va, vb, steps, totalCost);
+    for(i=va; i!= vb; i=result[ACS(i)].vertex){
+        fprintf(fp , "\n%d %d %.2lf", i, result[ACS(i)].vertex, result[ACS(i)].cost);
+    }
+    fprintf(fp, "\n\n");
+
+    free(result);
 
     return;
 }
