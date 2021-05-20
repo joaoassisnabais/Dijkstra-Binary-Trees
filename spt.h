@@ -7,12 +7,14 @@
 
 typedef struct _QData QData;
 typedef struct _PQueue PQueue;
+typedef struct _Parent parentArray;
 
 struct _QData {
     bool visited;
     int index;
     int previous;
     double cost;    //total cost
+    double parentCost;
 };
 
 struct _PQueue{
@@ -22,7 +24,12 @@ struct _PQueue{
     int size;
 };
 
+struct _Parent{
+    int vertex;
+    double cost;
+};
+
 void pqTree(node* tree, PQueue** q, double currentCost, int previous);
-int * dijkstra(data *g, int src, int end);
+parentArray * dijkstra(data *g, int src, int end);
 
 #endif /* Spt_h */

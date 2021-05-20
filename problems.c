@@ -113,7 +113,7 @@ bfsOut* bfsTree(data *g, int v, int k) {
 
 void A1(data* g, int va, int vb){
 
-    dijkstra(g, 3, 1);
+    dijkstra(g, 3, 2);
     return;
 }
 

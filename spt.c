@@ -69,7 +69,7 @@ void pqModify(PQueue *q, int index, double newcost){
     return;
 }
 
-void pqAdd(PQueue **qP, int vId, double newcost, int previous){
+void pqAdd(PQueue **qP, int vId, double newcost, int previous, double parentCost){
     PQueue *q = *qP;
     if(q->data[vId].visited == true)
         return;
@@ -83,6 +83,7 @@ void pqAdd(PQueue **qP, int vId, double newcost, int previous){
     q->data[vId].cost = newcost;
     q->data[vId].index = q->n_elements;
     q->data[vId].previous = previous;
+    q->data[vId].parentCost = parentCost;
     q->n_elements++;
     fixUp(q, q->data[vId].index);
 }
@@ -110,7 +111,7 @@ void pqTree(node* tree, PQueue** q, double currentCost, int previous){
     if(tree==NULL)
         return;
     if(!(*q)->data[ACS(tree->name)].visited)
-        pqAdd(q, ACS(tree->name), tree->cost + currentCost, previous);
+        pqAdd(q, ACS(tree->name), tree->cost + currentCost, previous, tree->cost);
     if ((tree->left==NULL) && (tree->right==NULL))
         return; //Dead End
     if (tree->left)
@@ -142,27 +143,29 @@ void initQData(PQueue *q, int vId) {
     q->qVertex[vId] = -1;
 }
 
-int * dijkstra(data *g, int src, int end) {
+parentArray * dijkstra(data *g, int src, int end) {
 
     PQueue *q;
-    int *parent; //array de parents
+    parentArray *parent; //array de parents
     int current;
     
-    parent = (int*) malloc(sizeof(int) * g->nv);
+    parent = (parentArray*) malloc(sizeof(parentArray) * g->nv);
     q = pqCreate(g->nv);
 
     for(int v = 0; v < g->nv; v++) {
         initQData(q, v);
-        parent[v] = v;
+        parent[v].vertex = v;
+        parent[v].cost = -1;
     }
 
-    pqAdd(&q, ACS(src), 0, ACS(src));    //add src à Queue
+    pqAdd(&q, ACS(src), 0, ACS(src), 0);    //add src à Queue
 
     while(!pqEmpty(q) && current != ACS(end)) {
 
         current = pqPop(q);
-        parent[current] = q->data[current].previous;
-        printf("vertice %d: Access through: %d Cost: %lf\n", current+1, parent[current]+1, q->data[current].cost);
+        parent[current].vertex = q->data[current].previous;
+        parent[current].cost = q->data[current].parentCost;
+        printf("vertice %d: Access through: %d Parent cost: %lf Total cost: %lf\n", current+1, parent[current].vertex+1, parent[current].cost, q->data[current].cost);
         if(current != -1)
             pqTree (g->table[current].root, &q, q->data[current].cost, current);
     }
