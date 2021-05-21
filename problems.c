@@ -144,7 +144,6 @@ void A1(FILE* fp, data* g, int va, int vb){
 }
 
 void B1(FILE* fp, data* g, int va, int vb, char id, double detour){
-
     double totalCostA=-1, totalCost1 = -1, totalCost2 = -1, updatedCost = __DBL_MAX__;
     int i, j, chosenVertex, steps = 0;
     parentArray *resultA, *result1, *result2, *updatedResult1=NULL, *updatedResult2=NULL;
@@ -245,9 +244,7 @@ void B1(FILE* fp, data* g, int va, int vb, char id, double detour){
 }
 
 void C1(FILE* fp, data* g, int va, int vb, int k){
-  /*  
-
-    parentArray *result;
+    parentArray *result, *result2;
     double cost1=-1, cost2=-1, totalCost;
     int steps=0, notV=-1, i;
 
@@ -270,25 +267,70 @@ void C1(FILE* fp, data* g, int va, int vb, int k){
     if(va == notV || vb == notV || notV == -1){
         printf("%d %d C1 %d %d %d %d %.2lf -1",g->nv, g->na, va, vb, k, steps, cost1);
         for(i=va; i!= vb; i=result[ACS(i)].vertex)
-            printf("\n%d %d %.2lf", i, g.vertices[i-1].parent, g.vertices[i-1].parentcost);
+            printf("\n%d %d %.2lf", i, result[ACS(i)].vertex, result[ACS(i)].cost);
 
         printf("\n\n");
+        free(result);
         return;
     }
 
-    fprintf(fp, "%d %d C1 %d %d %d %.2lf", g->nv, g->na, va, vb, steps, totalCost);
+    result2 = dijkstra(g, vb, va, &cost2, notV, -2);
+    free(result2);
+
+    totalCost=cost2-cost1;
+    fprintf(fp, "%d %d C1 %d %d %d %d %.2lf", g->nv, g->na, va, vb, k, steps, totalCost);
     for(i=va; i!= vb; i=result[ACS(i)].vertex){
         fprintf(fp , "\n%d %d %.2lf", i, result[ACS(i)].vertex, result[ACS(i)].cost);
     }
     fprintf(fp, "\n\n");
 
     free(result);
-*/
-    return;
 }
 
 void D1(FILE* fp, data* g, int va, int vb, int k){
 
+    parentArray *result, *result2;
+    double cost1=-1, cost2=-1, totalCost;
+    int steps=0, notV1=-1, notV2=-1, i;
 
-    return;
+    if( (va < 1) || (vb < 1) || (va > g->nv) || (vb > g->nv) ){
+        fprintf(fp, "%d %d D1 %d %d %d -1", g->nv, g->na, va, vb, k);
+        fprintf(fp, "\n\n");
+        return;
+    }
+
+    if(va == vb){
+        fprintf(fp, "%d %d D1 %d %d %d 0 0.00 -1", g->nv, g->na, va, vb, k);
+        fprintf(fp, "\n\n");
+        return;
+    }
+
+    result = dijkstra(g, vb, va, &cost1, -2, -2);
+
+    for(i=va; i!= vb; i=result[ACS(i)].vertex, steps++) if(steps == k-1){
+        notV1 = i;
+        notV2 = result[ACS(i)].vertex;
+    }
+
+    if(notV1 == -1 && notV2 == -1){
+        printf("%d %d D1 %d %d %d %d %.2lf -1",g->nv, g->na, va, vb, k, steps, cost1);
+        for(i=va; i!= vb; i=result[ACS(i)].vertex)
+            printf("\n%d %d %.2lf", i, result[ACS(i)].vertex, result[ACS(i)].cost);
+
+        printf("\n\n");
+        free(result);
+        return;
+    }
+
+    result2 = dijkstra(g, vb, va, &cost2, notV1, notV2);
+    free(result2);
+
+    totalCost=cost2-cost1;
+    fprintf(fp, "%d %d D1 %d %d %d %d %.2lf", g->nv, g->na, va, vb, k, steps, totalCost);
+    for(i=va; i!= vb; i=result[ACS(i)].vertex){
+        fprintf(fp , "\n%d %d %.2lf", i, result[ACS(i)].vertex, result[ACS(i)].cost);
+    }
+    fprintf(fp, "\n\n");
+
+    free(result);
 }

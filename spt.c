@@ -162,6 +162,7 @@ parentArray* dijkstra(data *g, int src, int end, double* totalCost, int va, int 
     int current;
     
     parent = (parentArray*) malloc(sizeof(parentArray) * g->nv);
+    
     q = pqCreate(g->nv);
 
     for(int v = 0; v < g->nv; v++) {
@@ -181,9 +182,10 @@ parentArray* dijkstra(data *g, int src, int end, double* totalCost, int va, int 
         if(current != -1 && q->data[ACS(end)].visited != 1){
             pqTree(g->table[current].root, &q, q->data[current].cost, current, va, vb);
         }
+
         parent[current].vertex = q->data[current].previous + 1;
         parent[current].cost = q->data[current].parentCost;
-        
+
         if(q->data[ACS(end)].visited == 1){
             *totalCost=q->data[ACS(end)].cost;
             pqFree(q);
