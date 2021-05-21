@@ -143,24 +143,60 @@ void A1(FILE* fp, data* g, int va, int vb){
     free(result);
 }
 
-void B1(FILE* fp, data* g, int va, int vb, char id, double cost){
+void B1(FILE* fp, data* g, int va, int vb, char id, double detour){
 
-    double totalCost1 = -1, totalCost2 = -1, updatedCost = __DBL_MAX__;
+    double totalCostA=-1, totalCost1 = -1, totalCost2 = -1, updatedCost = __DBL_MAX__;
     int i, j, chosenVertex, steps = 0;
-    parentArray *result1, *result2, *updatedResult1, *updatedResult2;
+    parentArray *resultA, *result1, *result2, *updatedResult1=NULL, *updatedResult2=NULL;
+    bool inOriginalPath=false;
 
-    for(i = 0; i < g->nv; i++) {
-        printf("vertice:%d id:%s\n", i, g->table[i].id);
-        for(j = 0; (g->table[i].id[j] >= 'a') && (g->table[i].id[j] <= 'z'); j++) { //NAO ESTA A ENTRAR NA CONDICAO DO FOR
+    if( (va < 1) || (vb < 1) || (va > g->nv) || (vb > g->nv) ){
+        fprintf(fp, "%d %d B1 %d %d %c %.2lf -1", g->nv, g->na, va, vb, id, detour);
+        fprintf(fp, "\n\n");
+        return;
+    }
+
+    resultA = dijkstra(g, vb, va, &totalCostA, -2, -2);
+    for(i=va; i!= vb; i=resultA[ACS(i)].vertex){
+        
+        while(g->table[ACS(i)].id[j] != '\0'){
+            if(g->table[ACS(i)].id[j]==id) inOriginalPath=true;
+            j++;
+        }
+        steps++;
+    }
+    if (inOriginalPath){
+        
+        fprintf(fp, "%d %d B1 %d %d %c %.2lf %d %.2lf", g->nv, g->na, va, vb, id, detour, steps, totalCostA);
+        for(i=va; i!= vb; i=resultA[ACS(i)].vertex){
+            fprintf(fp , "\n%d %d %.2lf", i, resultA[ACS(i)].vertex, resultA[ACS(i)].cost);
+        }
+        fprintf(fp, "\n\n");
+
+        free(resultA);
+        return;
+    }
+    //correr o vetor e correr o dijkstra para os que tiverem o id correto
+    for(i = 0; i < g->nv; i++){
+        //printf("vertice:%d id:%s\n", i, g->table[i].id);
+        for(j = 0; (g->table[i].id[j] >= 'a') && (g->table[i].id[j] <= 'z'); j++){
+            //verificar se o char pedido esta na string e correr o dijkstra se sim
             if(g->table[i].id[j] == id){
                 result1 = dijkstra(g, i+1, va, &totalCost1, -2, -2);
                 result2 = dijkstra(g, vb, i+1, &totalCost2, -2, -2);
-                if((totalCost1 + totalCost2) < updatedCost) {
+                //verificar se o custo é menor do que o menor obtido
+                if((totalCost1 + totalCost2) < updatedCost){
+                    //se não for a 1ª iteração dar free dos valores
+                    if(updatedResult1 != NULL && updatedResult2 != NULL){
+                        free(updatedResult1);
+                        free(updatedResult2);
+                    }
+                    //atualizar os valores
                     updatedCost = totalCost1 + totalCost2;
                     updatedResult1 = result1;
                     updatedResult2 = result2;
                     chosenVertex = i+1;
-                } else {
+                }else{
                     free(result1);
                     free(result2);
                 }
@@ -175,11 +211,25 @@ void B1(FILE* fp, data* g, int va, int vb, char id, double cost){
     for(i=0;i<8; i++)
         printf("v:%d parent:%d cost:%lf\n", i+1, updatedResult2[i].vertex, updatedResult2[i].cost);
     printf("--PROBLEMS--\n\n");*/
+    
+    //verificar se o custo é excedido
+    double extracost = (updatedCost-totalCostA)/totalCostA;
+    if(extracost>detour && detour>=0){
+        fprintf(fp, "%d %d B1 %d %d %c %.2lf -1", g->nv, g->na, va, vb, id, detour);
+        fprintf(fp, "\n\n");
 
+        free(updatedResult1);
+        free(updatedResult2);
+        free(resultA);
+        return;
+    }
+    //ver o número de steps
+    steps=0;
     for(i=va; i!= chosenVertex; i=updatedResult1[ACS(i)].vertex, steps++);
     for(i=chosenVertex; i!= vb; i=updatedResult2[ACS(i)].vertex, steps++);
-    //.0lf para alterar
-    fprintf(fp, "%d %d B1 %d %d %c %.0lf %d %.2lf", g->nv, g->na, va, vb, id, cost, steps, updatedCost);
+
+    if(detour==-1) fprintf(fp, "%d %d B1 %d %d %c -1 %d %.2lf", g->nv, g->na, va, vb, id, steps, updatedCost);
+    else fprintf(fp, "%d %d B1 %d %d %c %.2lf %d %.2lf", g->nv, g->na, va, vb, id, detour, steps, updatedCost);
 
     for(i=va; i!= chosenVertex; i=updatedResult1[ACS(i)].vertex){
         fprintf(fp , "\n%d %d %.2lf", i, updatedResult1[ACS(i)].vertex, updatedResult1[ACS(i)].cost);
@@ -189,11 +239,9 @@ void B1(FILE* fp, data* g, int va, int vb, char id, double cost){
     }
     fprintf(fp, "\n\n");
 
-
     free(updatedResult1);
     free(updatedResult2);
-
-    return;
+    free(resultA);
 }
 
 void C1(FILE* fp, data* g, int va, int vb, int k){
