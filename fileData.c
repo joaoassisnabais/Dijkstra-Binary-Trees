@@ -44,7 +44,7 @@ probs * extractProbs (char* opt, FILE* fp) {
             if(fscanf(fp, "%d", &linha->k) == 0) exit(0);
         }
         if( (strcmp(linha->problema, "B1") == 0) ){
-            if(fscanf(fp, "%c %lf", &linha->id, &linha->cost) == 0) exit(0);
+            if(fscanf(fp, " %c %lf", &linha->id, &linha->cost) == 0) exit(0);
         }
         if(strcmp(opt, "-oo") == 0 || strcmp(opt, "-oa") == 0) break;
     }

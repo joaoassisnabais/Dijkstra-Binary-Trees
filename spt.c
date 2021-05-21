@@ -173,7 +173,7 @@ parentArray* dijkstra(data *g, int src, int end, double* totalCost, int va, int 
     pqAdd(&q, ACS(src), 0, ACS(src), 0, va, vb);    //add src à Queue
 
 
-    while(!pqEmpty(q)){
+    while(!pqEmpty(q)){//condição de paragem??
 
         current = pqPop(q);
 
@@ -189,7 +189,8 @@ parentArray* dijkstra(data *g, int src, int end, double* totalCost, int va, int 
 
         parent[current].vertex = q->data[current].previous + 1;
         parent[current].cost = q->data[current].parentCost;
-        printf("vertice: %d Pai: %d custo: %.2lf\n", current+1, parent[current].vertex, parent[current].cost);
+        //PRINT PARA DEBUGS, NAO APAGAR
+        //printf("vertice: %d Pai: %d custo: %.2lf\n", current+1, parent[current].vertex, parent[current].cost);
     }
     *totalCost=q->data[ACS(end)].cost;
     pqFree(q);
