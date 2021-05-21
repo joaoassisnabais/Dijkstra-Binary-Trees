@@ -79,7 +79,7 @@ void pqAdd(PQueue **qP, int vId, double newcost, int previous, double parentCost
     
     if(q->data[vId].visited == true)
         return;
-    if(q->data[vId].index != -1) {
+    if(q->data[vId].index != -1) {//já está na pQ?
         if(q->data[vId].cost <= newcost)
             return;
         pqModify(q, q->data[vId].index, newcost);
@@ -100,6 +100,8 @@ int pqPop(PQueue *q) {
         aux = q->qVertex[0];
         q->qVertex[0] = q->qVertex[q->n_elements - 1];
         q->qVertex[q->n_elements - 1] = -1;
+        updateIndex(q, 0, q->n_elements - 1);
+        //updateIndex(q, q->n_elements - 1, 0);
         q->n_elements--;
         fixDown(q, 0);
 
@@ -179,7 +181,7 @@ parentArray* dijkstra(data *g, int src, int end, double* totalCost, int va, int 
         current = pqPop(q);
 
     
-        if(current != -1 && q->data[ACS(end)].visited != 1){
+        if(current != -1 && q->data[ACS(end)].visited != true){
             pqTree(g->table[current].root, &q, q->data[current].cost, current, va, vb);
         }
 
