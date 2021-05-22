@@ -150,12 +150,14 @@ void B1(FILE* fp, data* g, int va, int vb, char id, double detour){
     bool inOriginalPath=false;
 
     if( (va < 1) || (vb < 1) || (va > g->nv) || (vb > g->nv) ){
-        fprintf(fp, "%d %d B1 %d %d %c %.2lf -1", g->nv, g->na, va, vb, id, detour);
+        if(detour==-1)fprintf(fp, "%d %d B1 %d %d %c -1 -1", g->nv, g->na, va, vb, id);
+        else fprintf(fp, "%d %d B1 %d %d %c %.2lf -1", g->nv, g->na, va, vb, id, detour);
         fprintf(fp, "\n\n");
         return;
     }
 
     resultA = dijkstra(g, vb, va, &totalCostA, -2, -2);
+
     for(i=va; i!= vb; i=resultA[ACS(i)].vertex){
         
         while(g->table[ACS(i)].id[j] != '\0'){

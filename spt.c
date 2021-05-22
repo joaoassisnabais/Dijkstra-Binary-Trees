@@ -31,8 +31,8 @@ void fixUp(PQueue *q, int index) {
         aux = q->qVertex[index];
         q->qVertex[index] = q->qVertex[parentOf(index)];
         q->qVertex[parentOf(index)] = aux;
-        updateIndex(q, index, parentOf(index));
-        updateIndex(q, parentOf(index), index);
+        updateIndex(q, index, index);
+        updateIndex(q, parentOf(index), parentOf(index));
         index = parentOf(index);
     }
 }
@@ -50,8 +50,8 @@ void fixDown(PQueue *q, int index) {
         aux = q->qVertex[index];
         q->qVertex[index] = q->qVertex[j];
         q->qVertex[j] = aux;
-        updateIndex(q, index, j);
-        updateIndex(q, j, index);
+        updateIndex(q, index, index);
+        updateIndex(q, j, j);
         index = j;
     }
 }
@@ -95,13 +95,22 @@ void pqAdd(PQueue **qP, int vId, double newcost, int previous, double parentCost
 
 int pqPop(PQueue *q) {
     int aux;
+    
+    if (q->n_elements == 1) {
+        aux = q->qVertex[0];
+        q->data[aux].index = -1;
+        q->data[aux].visited = true;
+        q->n_elements--;
 
+        return aux;
+    }
+    
     if(q->n_elements > 0) {
         aux = q->qVertex[0];
         q->qVertex[0] = q->qVertex[q->n_elements - 1];
         q->qVertex[q->n_elements - 1] = -1;
-        updateIndex(q, 0, q->n_elements - 1);
-        //updateIndex(q, q->n_elements - 1, 0);
+        
+        q->data[q->qVertex[0]].index = 0;
         q->n_elements--;
         fixDown(q, 0);
 
@@ -174,6 +183,7 @@ parentArray* dijkstra(data *g, int src, int end, double* totalCost, int va, int 
     }
 
     pqAdd(&q, ACS(src), 0, ACS(src), 0, va, vb);    //add src à Queue
+    parent[ACS(src)].cost = 0;
 
 
     while(!pqEmpty(q)){//condição de paragem??
