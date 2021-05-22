@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
+#include <float.h>
 
 #include "fileData.h"
 #include "graphs.h"
@@ -132,6 +133,13 @@ void A1(FILE* fp, data* g, int va, int vb){
 
     result = dijkstra(g, vb, va, &totalCost, -2, -2);
 
+    if(result == NULL) {
+        fprintf(fp, "%d %d A1 %d %d -1", g->nv, g->na, va, vb);
+        fprintf(fp, "\n\n");
+        free(result);
+        return;
+    }
+
     for(i=va; i!= vb; i=result[ACS(i)].vertex, steps++);
 
     fprintf(fp, "%d %d A1 %d %d %d %.2lf", g->nv, g->na, va, vb, steps, totalCost);
@@ -144,14 +152,16 @@ void A1(FILE* fp, data* g, int va, int vb){
 }
 
 void B1(FILE* fp, data* g, int va, int vb, char id, double detour){
-    double totalCostA=-1, totalCost1 = -1, totalCost2 = -1, updatedCost = __DBL_MAX__;
-    int i, j, chosenVertex, steps = 0;
+    double totalCostA=-1, totalCost1 = -1, totalCost2 = -1, updatedCost = DBL_MAX;
+    int i, j = 0, chosenVertex = -1, steps = 0;
     parentArray *resultA, *result1, *result2, *updatedResult1=NULL, *updatedResult2=NULL;
     bool inOriginalPath=false;
 
     if( (va < 1) || (vb < 1) || (va > g->nv) || (vb > g->nv) ){
-        if(detour==-1)fprintf(fp, "%d %d B1 %d %d %c -1 -1", g->nv, g->na, va, vb, id);
-        else fprintf(fp, "%d %d B1 %d %d %c %.2lf -1", g->nv, g->na, va, vb, id, detour);
+        if(detour==-1)
+            fprintf(fp, "%d %d B1 %d %d %c -1 -1", g->nv, g->na, va, vb, id);
+        else
+            fprintf(fp, "%d %d B1 %d %d %c %.2lf -1", g->nv, g->na, va, vb, id, detour);
         fprintf(fp, "\n\n");
         return;
     }
@@ -167,8 +177,10 @@ void B1(FILE* fp, data* g, int va, int vb, char id, double detour){
         steps++;
     }
     if (inOriginalPath){
-        
-        fprintf(fp, "%d %d B1 %d %d %c %.2lf %d %.2lf", g->nv, g->na, va, vb, id, detour, steps, totalCostA);
+        if( detour == -1 )
+            fprintf(fp, "%d %d B1 %d %d %c -1 %d %.2lf", g->nv, g->na, va, vb, id, steps, totalCostA);
+        else
+            fprintf(fp, "%d %d B1 %d %d %c %.2lf %d %.2lf", g->nv, g->na, va, vb, id, detour, steps, totalCostA);
         for(i=va; i!= vb; i=resultA[ACS(i)].vertex){
             fprintf(fp , "\n%d %d %.2lf", i, resultA[ACS(i)].vertex, resultA[ACS(i)].cost);
         }
@@ -224,13 +236,24 @@ void B1(FILE* fp, data* g, int va, int vb, char id, double detour){
         free(resultA);
         return;
     }
+
+    if(updatedResult1 == NULL || updatedResult2 == NULL) {
+        fprintf(fp, "%d %d B1 %d %d %c -1 -1", g->nv, g->na, va, vb, id);
+        fprintf(fp, "\n\n");
+        free(updatedResult1);
+        free(updatedResult2);
+        free(resultA);
+        return;
+    }
     //ver o número de steps
     steps=0;
     for(i=va; i!= chosenVertex; i=updatedResult1[ACS(i)].vertex, steps++);
     for(i=chosenVertex; i!= vb; i=updatedResult2[ACS(i)].vertex, steps++);
 
-    if(detour==-1) fprintf(fp, "%d %d B1 %d %d %c -1 %d %.2lf", g->nv, g->na, va, vb, id, steps, updatedCost);
-    else fprintf(fp, "%d %d B1 %d %d %c %.2lf %d %.2lf", g->nv, g->na, va, vb, id, detour, steps, updatedCost);
+    if( detour == -1 )
+        fprintf(fp, "%d %d B1 %d %d %c -1 %d %.2lf", g->nv, g->na, va, vb, id, steps, updatedCost);
+    else
+        fprintf(fp, "%d %d B1 %d %d %c %.2lf %d %.2lf", g->nv, g->na, va, vb, id, detour, steps, updatedCost);
 
     for(i=va; i!= chosenVertex; i=updatedResult1[ACS(i)].vertex){
         fprintf(fp , "\n%d %d %.2lf", i, updatedResult1[ACS(i)].vertex, updatedResult1[ACS(i)].cost);

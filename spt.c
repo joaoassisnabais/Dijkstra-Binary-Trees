@@ -83,6 +83,9 @@ void pqAdd(PQueue **qP, int vId, double newcost, int previous, double parentCost
         if(q->data[vId].cost <= newcost)
             return;
         pqModify(q, q->data[vId].index, newcost);
+        q->data[vId].previous = previous;
+        q->data[vId].parentCost = parentCost;
+        return;
     }
     q->qVertex[q->n_elements] = vId;
     q->data[vId].cost = newcost;
