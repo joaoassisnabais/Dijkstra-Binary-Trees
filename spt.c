@@ -72,9 +72,9 @@ void pqModify(PQueue *q, int index, double newcost){
 void pqAdd(PQueue **qP, int vId, double newcost, int previous, double parentCost, int va, int vb){
     PQueue *q = *qP;
 
-    if(vId == va && vb == -2)
+    if(vId == ACS(va) && vb == -2)
         return;
-    if( (vId == va && previous == vb) || (vId == vb && previous == va) )
+    if( (vId == ACS(va) && previous == ACS(vb)) || (vId == ACS(vb) && previous == ACS(va)) )
         return;
     
     if(q->data[vId].visited == true)

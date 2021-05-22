@@ -147,7 +147,6 @@ void A1(FILE* fp, data* g, int va, int vb){
         fprintf(fp , "\n%d %d %.2lf", i, result[ACS(i)].vertex, result[ACS(i)].cost);
     }
     fprintf(fp, "\n\n");
-
     free(result);
 }
 
@@ -167,6 +166,16 @@ void B1(FILE* fp, data* g, int va, int vb, char id, double detour){
     }
 
     resultA = dijkstra(g, vb, va, &totalCostA, -2, -2);
+
+    if(resultA == NULL) {
+        if(detour==-1)
+            fprintf(fp, "%d %d B1 %d %d %c -1 -1", g->nv, g->na, va, vb, id);
+        else
+            fprintf(fp, "%d %d B1 %d %d %c %.2lf -1", g->nv, g->na, va, vb, id, detour);
+        fprintf(fp, "\n\n");
+        free(resultA);
+        return;
+    }
 
     for(i=va; i!= vb; i=resultA[ACS(i)].vertex){
         
@@ -192,7 +201,7 @@ void B1(FILE* fp, data* g, int va, int vb, char id, double detour){
     //correr o vetor e correr o dijkstra para os que tiverem o id correto
     for(i = 0; i < g->nv; i++){
         //printf("vertice:%d id:%s\n", i, g->table[i].id);
-        for(j = 0; (g->table[i].id[j] >= 'a') && (g->table[i].id[j] <= 'z'); j++){
+        for(j = 0; g->table[i].id[j] != '\0'; j++){
             //verificar se o char pedido esta na string e correr o dijkstra se sim
             if(g->table[i].id[j] == id){
                 result1 = dijkstra(g, i+1, va, &totalCost1, -2, -2);
@@ -238,13 +247,16 @@ void B1(FILE* fp, data* g, int va, int vb, char id, double detour){
     }
 
     if(updatedResult1 == NULL || updatedResult2 == NULL) {
-        fprintf(fp, "%d %d B1 %d %d %c -1 -1", g->nv, g->na, va, vb, id);
+        if( detour == -1 )
+            fprintf(fp, "%d %d B1 %d %d %c -1 -1", g->nv, g->na, va, vb, id);
+        else
+            fprintf(fp, "%d %d B1 %d %d %c %.2lf -1", g->nv, g->na, va, vb, id, detour);
+
         fprintf(fp, "\n\n");
-        free(updatedResult1);
-        free(updatedResult2);
         free(resultA);
         return;
     }
+
     //ver o número de steps
     steps=0;
     for(i=va; i!= chosenVertex; i=updatedResult1[ACS(i)].vertex, steps++);
@@ -269,7 +281,7 @@ void B1(FILE* fp, data* g, int va, int vb, char id, double detour){
 }
 
 void C1(FILE* fp, data* g, int va, int vb, int k){
-    parentArray *result, *result2;
+    parentArray *result=NULL, *result2=NULL;
     double cost1=-1, cost2=-1, totalCost;
     int steps=0, notV=-1, i;
 
@@ -287,34 +299,51 @@ void C1(FILE* fp, data* g, int va, int vb, int k){
 
     result = dijkstra(g, vb, va, &cost1, -2, -2);
 
+    if(result == NULL) {
+        fprintf(fp, "%d %d C1 %d %d %d -1", g->nv, g->na, va, vb, k);
+        fprintf(fp, "\n\n");
+        free(result);
+        return;
+    }
+
     for(i=va; i!= vb; i=result[ACS(i)].vertex, steps++) if(steps == k-1) notV = i;
 
     if(va == notV || vb == notV || notV == -1){
-        printf("%d %d C1 %d %d %d %d %.2lf -1",g->nv, g->na, va, vb, k, steps, cost1);
+        fprintf(fp, "%d %d C1 %d %d %d %d %.2lf -1",g->nv, g->na, va, vb, k, steps, cost1);
         for(i=va; i!= vb; i=result[ACS(i)].vertex)
-            printf("\n%d %d %.2lf", i, result[ACS(i)].vertex, result[ACS(i)].cost);
+            fprintf(fp, "\n%d %d %.2lf", i, result[ACS(i)].vertex, result[ACS(i)].cost);
 
-        printf("\n\n");
+        fprintf(fp, "\n\n");
         free(result);
         return;
     }
 
     result2 = dijkstra(g, vb, va, &cost2, notV, -2);
-    free(result2);
 
+    if(result2==NULL){
+        fprintf(fp, "%d %d C1 %d %d %d %d %.2lf -1",g->nv, g->na, va, vb, k, steps, cost1);
+        for(i=va; i!= vb; i=result[ACS(i)].vertex)
+            fprintf(fp, "\n%d %d %.2lf", i, result[ACS(i)].vertex, result[ACS(i)].cost);
+
+        fprintf(fp, "\n\n");
+        free(result);
+        return;
+    }
+
+    free(result2);
+    
     totalCost=cost2-cost1;
-    fprintf(fp, "%d %d C1 %d %d %d %d %.2lf", g->nv, g->na, va, vb, k, steps, totalCost);
+    fprintf(fp, "%d %d C1 %d %d %d %d %.2lf %.2lf", g->nv, g->na, va, vb, k, steps, cost1, totalCost);
     for(i=va; i!= vb; i=result[ACS(i)].vertex){
         fprintf(fp , "\n%d %d %.2lf", i, result[ACS(i)].vertex, result[ACS(i)].cost);
     }
     fprintf(fp, "\n\n");
-
     free(result);
 }
 
 void D1(FILE* fp, data* g, int va, int vb, int k){
 
-    parentArray *result, *result2;
+    parentArray *result=NULL, *result2=NULL;
     double cost1=-1, cost2=-1, totalCost;
     int steps=0, notV1=-1, notV2=-1, i;
 
@@ -332,30 +361,46 @@ void D1(FILE* fp, data* g, int va, int vb, int k){
 
     result = dijkstra(g, vb, va, &cost1, -2, -2);
 
+    if(result == NULL) {
+        fprintf(fp, "%d %d D1 %d %d %d -1", g->nv, g->na, va, vb, k);
+        fprintf(fp, "\n\n");
+        free(result);
+        return;
+    }
+
     for(i=va; i!= vb; i=result[ACS(i)].vertex, steps++) if(steps == k-1){
         notV1 = i;
         notV2 = result[ACS(i)].vertex;
     }
 
     if(notV1 == -1 && notV2 == -1){
-        printf("%d %d D1 %d %d %d %d %.2lf -1",g->nv, g->na, va, vb, k, steps, cost1);
+        fprintf(fp, "%d %d D1 %d %d %d %d %.2lf -1",g->nv, g->na, va, vb, k, steps, cost1);
         for(i=va; i!= vb; i=result[ACS(i)].vertex)
-            printf("\n%d %d %.2lf", i, result[ACS(i)].vertex, result[ACS(i)].cost);
+            fprintf(fp, "\n%d %d %.2lf", i, result[ACS(i)].vertex, result[ACS(i)].cost);
 
-        printf("\n\n");
+        fprintf(fp, "\n\n");
         free(result);
         return;
     }
 
     result2 = dijkstra(g, vb, va, &cost2, notV1, notV2);
+
+    if(result2==NULL){
+        fprintf(fp, "%d %d D1 %d %d %d %d %.2lf -1",g->nv, g->na, va, vb, k, steps, cost1);
+        for(i=va; i!= vb; i=result[ACS(i)].vertex)
+            fprintf(fp, "\n%d %d %.2lf", i, result[ACS(i)].vertex, result[ACS(i)].cost);
+
+        fprintf(fp, "\n\n");
+        free(result);
+        return;
+    }
     free(result2);
 
     totalCost=cost2-cost1;
-    fprintf(fp, "%d %d D1 %d %d %d %d %.2lf", g->nv, g->na, va, vb, k, steps, totalCost);
+    fprintf(fp, "%d %d D1 %d %d %d %d %.2lf %.2lf", g->nv, g->na, va, vb, k, steps, cost1, totalCost);
     for(i=va; i!= vb; i=result[ACS(i)].vertex){
         fprintf(fp , "\n%d %d %.2lf", i, result[ACS(i)].vertex, result[ACS(i)].cost);
     }
     fprintf(fp, "\n\n");
-
     free(result);
 }
