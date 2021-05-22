@@ -151,7 +151,7 @@ void A1(FILE* fp, data* g, int va, int vb){
 }
 
 void B1(FILE* fp, data* g, int va, int vb, char id, double detour){
-    double totalCostA=-1, totalCost1 = -1, totalCost2 = -1, updatedCost = DBL_MAX;
+    double totalCostA = DBL_MAX, totalCost1 = DBL_MAX, totalCost2 = DBL_MAX, updatedCost = DBL_MAX;
     int i, j = 0, chosenVertex = -1, steps = 0;
     parentArray *resultA, *result1, *result2, *updatedResult1=NULL, *updatedResult2=NULL;
     bool inOriginalPath=false;
