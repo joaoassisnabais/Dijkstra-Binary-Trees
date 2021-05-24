@@ -11,13 +11,20 @@
 #include <string.h>
 
 #include "fileData.h"
-#include "graphs.h"
-#include "matrix.h"
 #include "problems.h"
+#include "spt.h"
+#include "graphs.h"
 #include "binaryTree.h"
 
 #define MAPS 4
 
+/**
+ * @description: reads the .pbrs file, creates a linked list, stores each problem in it and returns the pointer to its head
+ * 
+ * @parameter: opt 
+ * @parameter: fp 
+ * @return: probs* 
+ */
 probs * extractProbs (char* opt, FILE* fp) {
 
     probs *output = NULL, *linha = NULL;
@@ -53,6 +60,13 @@ probs * extractProbs (char* opt, FILE* fp) {
     return output;
 }
 
+/**
+ * @description: reads the input string given and opens both the maps file in read mode and the output file in write mode
+ * 
+ * @parameter: mapFile 
+ * @parameter: fpMaps 
+ * @parameter: fpout 
+ */
 void openMapandOut(char* mapFile, FILE** fpMaps, FILE** fpout) {
 
     char extout[] = "routes";
@@ -75,6 +89,13 @@ void openMapandOut(char* mapFile, FILE** fpMaps, FILE** fpout) {
     return;
 }
 
+/**
+ * @description: selects which problem function to call, given the linked list of problems
+ * 
+ * @parameter: headProbs 
+ * @parameter: fpout 
+ * @parameter: g 
+ */
 void selectProblems(probs* headProbs, FILE* fpout, data* g) {
 
     probs *auxProbs = headProbs;
@@ -104,6 +125,11 @@ void selectProblems(probs* headProbs, FILE* fpout, data* g) {
     return;
 }
 
+/**
+ * @description: frees the space allocated to the linked list used to store the problems
+ * 
+ * @parameter: p 
+ */
 void freeProbs(probs *p){
 
     probs *aux = p;

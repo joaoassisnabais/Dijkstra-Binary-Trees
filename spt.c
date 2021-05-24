@@ -5,7 +5,6 @@
 #include <float.h>
 
 #include "spt.h"
-#include "matrix.h"
 
 /**
  * @description: compares two costs
