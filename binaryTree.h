@@ -7,7 +7,9 @@
  ******************************************************************************/
 #ifndef BINARY_TREE_H
 #define BINARY_TREE_H
+
 #define INF 999999
+#define ACS(x) (x-1)
 
 typedef struct _node node;
 typedef struct _trunk trunk;

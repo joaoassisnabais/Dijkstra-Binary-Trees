@@ -11,11 +11,17 @@
 #include <string.h>
 
 #include "fileData.h"
-#include "graphs.h"
-#include "matrix.h"
 #include "problems.h"
+#include "spt.h"
+#include "graphs.h"
 #include "binaryTree.h"
 
+/**
+ * @description: creates a graph (AVL tree)
+ * 
+ * @parameter: fp 
+ * @parameter: g 
+ */
 void createGraph(FILE** fp, data* g){
 
     char str[30];
@@ -24,7 +30,7 @@ void createGraph(FILE** fp, data* g){
 
     g->table = CreateTrunk(g->nv);
 
-    //colocar os valores dos ids na matriz
+    /*store the ids in each trunk*/
     for (i=0; i<g->nv; i++){
         if(fscanf(*fp,"%d", &nVer) == 0) exit(0);
         if(fscanf(*fp, "%s", str) == 0) exit(0);
@@ -34,15 +40,15 @@ void createGraph(FILE** fp, data* g){
         g->table[ACS(nVer)].id[len-1] = '\0';
     }
     
-    //colocar os custos na matriz de adjacência
+    /*store the edges and its costs in each node of the AVL tree*/
     for(i=0; i<g->na; i++){
         if(fscanf(*fp,"%d", &va) == 0) exit(0);
         if(fscanf(*fp,"%d", &vb) == 0) exit(0);
         if(fscanf(*fp,"%lf", &cost) == 0) exit(0);
-        g->table[ACS(va)].root = AVLInsert(g->table[ACS(va)].root, vb, cost);   //Insert edge into tree
-        g->table[ACS(va)].nLinks++;                                             //Increment number of links of the one vertex
-        g->table[ACS(vb)].root = AVLInsert(g->table[ACS(vb)].root, va, cost);
-        g->table[ACS(vb)].nLinks++;
+        g->table[ACS(va)].root = AVLInsert(g->table[ACS(va)].root, vb, cost);   //Insert edge into vertex's a tree
+        g->table[ACS(va)].nLinks++;                                             //Increment number of links on the vertex's a trunk
+        g->table[ACS(vb)].root = AVLInsert(g->table[ACS(vb)].root, va, cost);   //Insert edge into vertex's b tree
+        g->table[ACS(vb)].nLinks++;                                             //Increment number of links on the vertex's b trunk
     }
     return;
 }
@@ -56,6 +62,11 @@ void freeGraph(graph* g) {
     free(g->matrix);
 }
 
+/**
+ * @description: pops the top element from the queue
+ * 
+ * @parameter: q 
+ */
 void qPop(queue *q){
 
     qnode *auxNode = q->top;
@@ -64,6 +75,13 @@ void qPop(queue *q){
 
 }
 
+/**
+ * @description: adds an element to the queue
+ * 
+ * @parameter: q 
+ * @parameter: v 
+ * @return: queue* 
+ */
 queue * qAdd(queue *q, int v){
 
     if(q==NULL){
@@ -83,6 +101,11 @@ queue * qAdd(queue *q, int v){
     return q;
 }
 
+/**
+ * @description: frees the queue
+ * 
+ * @parameter: q 
+ */
 void qFree(queue *q){
 
     qnode *aux=q->top;
@@ -105,8 +128,13 @@ void qPrint(queue *q){
     }
 }
 
-//Recebe uma queue e uma árvore e percorre a árvore 
-//adicionando os nós não visitados à queue
+/**
+ * @description: reads the tree and stores every unvisited node to the queue
+ * 
+ * @parameter: tree 
+ * @parameter: q 
+ * @parameter: visited 
+ */
 void qTree(node* tree, queue** q, int* visited){
     
     if(tree==NULL)

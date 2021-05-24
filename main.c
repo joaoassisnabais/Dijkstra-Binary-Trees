@@ -11,9 +11,9 @@
 #include <string.h>
 
 #include "fileData.h"
-#include "graphs.h"
-#include "matrix.h"
 #include "problems.h"
+#include "spt.h"
+#include "graphs.h"
 #include "binaryTree.h"
 
 int main (int argc, char *argv[]){
